@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Perils of IsNull Function | Code is Liability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion?           1         ISNULL ( check_expression , replacement_value )               The documentation explicitly states that">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Perils of IsNull Function">
+<meta property="og:url" content="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/index.html">
+<meta property="og:site_name" content="Code is Liability">
+<meta property="og:description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion?           1         ISNULL ( check_expression , replacement_value )               The documentation explicitly states that">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-12-10T14:13:48.000Z">
+<meta property="article:modified_time" content="2020-06-26T13:14:23.602Z">
+<meta property="article:author" content="Alper Sunar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Code is Liability</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Perils-of-IsNull-Function" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/10/Perils-of-IsNull-Function/" class="article-date">
+  <time datetime="2018-12-10T14:13:48.000Z" itemprop="datePublished">2018-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Perils of IsNull Function
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Did you know that SQL Server’s IsNull() function does an implicit conversion?</p>
+<figure class="highlight sql">
+
+<table>
+
+<tbody>
+
+<tr>
+
+<td class="gutter">
+
+<pre><span class="line">1</span>  
+</pre>
+
+</td>
+
+<td class="code">
+
+<pre><span class="line">ISNULL ( check_expression , replacement_value )</span>  
+</pre>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</figure>
+
+<p>The documentation explicitly states that</p>
+<p>The value of check_expression is returned if it is not NULL; otherwise, replacement_value is returned after <strong>it is implicitly converted to the type of check_expression, if the types are different. replacement_value can be truncated if replacement_value is longer than check_expression.</strong> (emphasis mine)</p>
+<figure class="highlight sql">
+
+<table>
+
+<tbody>
+
+<tr>
+
+<td class="gutter">
+
+<pre><span class="line">1</span>  
+<span class="line">2</span>  
+<span class="line">3</span>  
+<span class="line">4</span>  
+<span class="line">5</span>  
+<span class="line">6</span>  
+<span class="line">7</span>  
+<span class="line">8</span>  
+<span class="line">9</span>  
+<span class="line">10</span>  
+<span class="line">11</span>  
+<span class="line">12</span>  
+<span class="line">13</span>  
+<span class="line">14</span>  
+<span class="line">15</span>  
+<span class="line">16</span>  
+<span class="line">17</span>  
+<span class="line">18</span>  
+<span class="line">19</span>  
+</pre>
+
+</td>
+
+<td class="code">
+
+<pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (</span>  
+ <span class="line">EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)</span>  
+<span class="line">)</span>  
+<span class="line"></span>  
+<span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull</span>  
+<span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span></span>  
+<span class="line"></span>  
+<span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span></span>  
+<span class="line"></span>  
+<span class="line"><span class="keyword">select</span> *</span>  
+<span class="line"><span class="keyword">from</span></span>   
+ <span class="line">@TestIsNull</span>   
+<span class="line"><span class="keyword">where</span></span>  
+ <span class="line">empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)</span>  
+<span class="line"></span>  
+<span class="line">EmpID</span>  
+<span class="line"><span class="comment">----------</span></span>  
+<span class="line"></span>  
+<span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span>  
+</pre>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</figure>
+
+<p>See the problem? Data type of EmpId column on line 2 is varchar(10) and the data type of empIdFilter is varchar(9).</p>
+<p>Therefore, ISNULL will convert varchar(10) to varchar(9) resulting in truncation. Now imagine this in a stored procedure where the EmpId column datatype is not obvious and filter variable is declared somewhere far away from the SQL statement. It becomes a pretty insidious bug.</p>
+<p>In order to avoid this, you can write your SQL statement like this.</p>
+<figure class="highlight sql">
+
+<table>
+
+<tbody>
+
+<tr>
+
+<td class="gutter">
+
+<pre><span class="line">1</span>  
+<span class="line">2</span>  
+<span class="line">3</span>  
+<span class="line">4</span>  
+<span class="line">5</span>  
+<span class="line">6</span>  
+<span class="line">7</span>  
+<span class="line">8</span>  
+<span class="line">9</span>  
+<span class="line">10</span>  
+<span class="line">11</span>  
+<span class="line">12</span>  
+<span class="line">13</span>  
+<span class="line">14</span>  
+<span class="line">15</span>  
+<span class="line">16</span>  
+<span class="line">17</span>  
+<span class="line">18</span>  
+<span class="line">19</span>  
+<span class="line">20</span>  
+</pre>
+
+</td>
+
+<td class="code">
+
+<pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (</span>  
+ <span class="line">EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)</span>  
+<span class="line">)</span>  
+<span class="line"></span>  
+<span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull</span>  
+<span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span></span>  
+<span class="line"></span>  
+<span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span></span>  
+<span class="line"></span>  
+<span class="line"><span class="keyword">select</span> *</span>  
+<span class="line"><span class="keyword">from</span></span>   
+ <span class="line">@TestIsNull</span>   
+<span class="line"><span class="keyword">where</span></span>   
+ <span class="line">@empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter</span>  
+<span class="line"></span>  
+<span class="line">EmpID</span>  
+<span class="line"><span class="comment">----------</span></span>  
+<span class="line"><span class="number">1234567890</span></span>  
+<span class="line"></span>  
+<span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span>  
+</pre>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckbw8mfe70000q4ne1o6g36pe" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Trends/Predictions for the Software Industry
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/15/Remote-Work/">Remote Work Revolution</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/">Trends/Predictions for the Software Industry</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/10/Perils-of-IsNull-Function/">Perils of IsNull Function</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Alper Sunar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
