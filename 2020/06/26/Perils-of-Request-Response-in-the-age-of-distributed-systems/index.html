@@ -5,23 +5,20 @@
   
 
   
-  <title>Remote Work Revolution | Code is Liability</title>
+  <title>Perils of Request/Response in the age of distributed systems | Code is Liability</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Remote work opportunities are on the rise. US Census Bureau documented that more people are working from home. The largest programming community website Stackoverflow added a remote checkbox to their">
+  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Remote Work Revolution">
-<meta property="og:url" content="http://yoursite.com/2019/01/15/Remote-Work/index.html">
+<meta property="og:title" content="Perils of Request&#x2F;Response in the age of distributed systems">
+<meta property="og:url" content="http://yoursite.com/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/index.html">
 <meta property="og:site_name" content="Code is Liability">
-<meta property="og:description" content="Remote work opportunities are on the rise. US Census Bureau documented that more people are working from home. The largest programming community website Stackoverflow added a remote checkbox to their">
+<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/images/stackoverflow.png">
-<meta property="og:image" content="http://yoursite.com/images/revolution_small.png">
-<meta property="article:published_time" content="2019-01-15T06:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-28T14:03:40.908Z">
+<meta property="article:published_time" content="2020-06-26T23:40:22.000Z">
+<meta property="article:modified_time" content="2020-06-28T14:28:44.283Z">
 <meta property="article:author" content="Alper Sunar">
-<meta property="article:tag" content="remote">
+<meta property="article:tag" content="ADSD">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/stackoverflow.png">
   
     <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
   
@@ -70,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="title-Remote-Work" class="article article-type-title" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Perils-of-Request-Response-in-the-age-of-distributed-systems" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/01/15/Remote-Work/" class="article-date">
-  <time datetime="2019-01-15T06:00:00.000Z" itemprop="datePublished">2019-01-15</time>
+    <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/" class="article-date">
+  <time datetime="2020-06-26T23:40:22.000Z" itemprop="datePublished">2020-06-26</time>
 </a>
     
   </div>
@@ -84,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Remote Work Revolution
+      Perils of Request/Response in the age of distributed systems
     </h1>
   
 
@@ -92,39 +89,48 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Remote work opportunities are on the rise. <a href="https://www.census.gov/library/visualizations/2013/comm/home_based_workers.html" target="_blank" rel="noopener">US Census Bureau</a> documented that more people are working from home.</p>
-<p>The largest programming community website Stackoverflow added a remote checkbox to their jobs page recently.<br><a href=""><img src="/images/stackoverflow.png" alt=""></a></p>
-<p>It is hard to ignore effects on recruiting.<br><a href="https://asunar.github.io/images/revolution_small.png" target="_blank" rel="noopener"><img src="/images/revolution_small.png" alt="" title="Revolution"></a></p>
-<p>While certain companies continue to rule out remote work (Netflix, Yahoo, Slack(!)), many others are embracing it. There are also some companies that are stuck somewhere in the middle. A prime example of this is Microsoft, there are several prominent technologists working remotely for Microsoft. However, there is no obvious way to search for a remote position in Microsoft’s careers site. Does Microsoft allow remote work? It depends…</p>
+        <p>This is a part of a series of posts to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
+<p>Let’s set the stage by stating our end goal.</p>
 <blockquote>
-<p>Will the remote work trend continue or will we see companies telling employees to come back to the office (Yahoo, IBM)?</p>
+<p>Design and build performant, maintainable and resilient software systems where adding the 200th feature is as fast and easy as adding the first.</p>
 </blockquote>
-<p>Due to the high cost of living in major tech hubs such as the Bay Area, Seattle and New York, it is not uncommon to see compensation packages (salary, bonus and equity) for experienced IT workers reaching $400K a year. On the other hand, anectodal evidence suggests that there are plenty of IT workers located elsewhere willing to accept a smaller comp package as long as they can work remotely.</p>
-<p>Let me put on my captain obvious hat for a second…</p>
-<p>Given that</p>
+<p>We will start with reliability. Everyone knows that network is not reliable. However, we continue to write code similar to this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
+<ol>
+<li><p>Need to send some data to a remote service for a long running workflow.</p>
+</li>
+<li><p>Invoke a synchronous call and wait for response.</p>
+</li>
+<li><p>Get a timeout exception</p>
+<p>Here are some posibble scenarios</p>
 <ul>
-<li>there is a talent shortage in the tech industry</li>
-<li>and it is projected to continue</li>
-<li>and IT worker comp packages are reaching new highs</li>
-<li>and IT worker comp packages are one of the biggest cost items in most companys’ balance sheets</li>
+<li>Data did not arrive at the server </li>
+<li>Data arrived, service did not complete processing before timeout.</li>
 </ul>
-<p>Then</p>
+<p>At this point client does not know what to do; this is important data needs to processed. </p>
 <ul>
-<li>all other things being equal, remote work trend should continue to accelerate simply due to basic laws of supply and demand.</li>
+<li>Resend and risk duplicate processing? </li>
+<li>Write service code to handle deduplication? What if we don’t own the service?</li>
+<li>What do we tell the user? I know “An unexpected error occurred” :)</li>
 </ul>
-<p>There are also less obvious signs of remote work revolution like a larger company that does not allow remote work acquiring a startup that actively encourages it. Microsoft’s Github acquisition is a good example. This seems to be happening to companies of all sizes across various industries effectively reversing anti-remote work policy.</p>
-<p>The prediction sounds reasonable:</p>
+<p>The bottom line is:</p>
 <blockquote>
-<p>The future of work is Remote.</p>
+<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later and production, some other thing will blow up and you’ll discover oh except that one.<br>-Udi Dahan</p>
 </blockquote>
+</li>
+</ol>
+<p>Today I learned: It is very difficult to build reliable systems on top of http with request/response (remote procedure calling-RPC, REST, Web Services etc. )</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckbz6e8yi0000lcnea9dk2nku" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/" data-id="ckbz6e8yv0005lcnehu271hkl" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
 
     </footer>
   </div>
@@ -132,19 +138,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/06/28/Works-on-my-machine/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Perils of Request/Response in the age of distributed systems
+          Works on my machine
         
       </div>
     </a>
   
   
-    <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/01/15/Remote-Work/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Trends/Predictions for the Software Industry</div>
+      <div class="article-nav-title">Remote Work Revolution</div>
     </a>
   
 </nav>

@@ -7,15 +7,15 @@
   
   <title>Perils of IsNull Function | Code is Liability</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion?           1         ISNULL ( check_expression , replacement_value )               The documentation explicitly states that">
+  <meta name="description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion? 1ISNULL ( check_expression , replacement_value) The documentation explicitly states that The value of check_expression is">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Perils of IsNull Function">
 <meta property="og:url" content="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/index.html">
 <meta property="og:site_name" content="Code is Liability">
-<meta property="og:description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion?           1         ISNULL ( check_expression , replacement_value )               The documentation explicitly states that">
+<meta property="og:description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion? 1ISNULL ( check_expression , replacement_value) The documentation explicitly states that The value of check_expression is">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2018-12-10T14:13:48.000Z">
-<meta property="article:modified_time" content="2020-06-26T13:14:23.602Z">
+<meta property="article:modified_time" content="2020-06-27T13:06:49.898Z">
 <meta property="article:author" content="Alper Sunar">
 <meta name="twitter:card" content="summary">
   
@@ -89,179 +89,19 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>Did you know that SQL Server’s IsNull() function does an implicit conversion?</p>
-<figure class="highlight sql">
-
-<table>
-
-<tbody>
-
-<tr>
-
-<td class="gutter">
-
-<pre><span class="line">1</span>  
-</pre>
-
-</td>
-
-<td class="code">
-
-<pre><span class="line">ISNULL ( check_expression , replacement_value )</span>  
-</pre>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</figure>
-
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ISNULL ( check_expression , replacement_value)</span><br></pre></td></tr></table></figure>
 <p>The documentation explicitly states that</p>
 <p>The value of check_expression is returned if it is not NULL; otherwise, replacement_value is returned after <strong>it is implicitly converted to the type of check_expression, if the types are different. replacement_value can be truncated if replacement_value is longer than check_expression.</strong> (emphasis mine)</p>
-<figure class="highlight sql">
-
-<table>
-
-<tbody>
-
-<tr>
-
-<td class="gutter">
-
-<pre><span class="line">1</span>  
-<span class="line">2</span>  
-<span class="line">3</span>  
-<span class="line">4</span>  
-<span class="line">5</span>  
-<span class="line">6</span>  
-<span class="line">7</span>  
-<span class="line">8</span>  
-<span class="line">9</span>  
-<span class="line">10</span>  
-<span class="line">11</span>  
-<span class="line">12</span>  
-<span class="line">13</span>  
-<span class="line">14</span>  
-<span class="line">15</span>  
-<span class="line">16</span>  
-<span class="line">17</span>  
-<span class="line">18</span>  
-<span class="line">19</span>  
-</pre>
-
-</td>
-
-<td class="code">
-
-<pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (</span>  
- <span class="line">EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)</span>  
-<span class="line">)</span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull</span>  
-<span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">select</span> *</span>  
-<span class="line"><span class="keyword">from</span></span>   
- <span class="line">@TestIsNull</span>   
-<span class="line"><span class="keyword">where</span></span>  
- <span class="line">empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)</span>  
-<span class="line"></span>  
-<span class="line">EmpID</span>  
-<span class="line"><span class="comment">----------</span></span>  
-<span class="line"></span>  
-<span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span>  
-</pre>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>  </span><br><span class="line"> empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line">  </span><br><span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span><br></pre></td></tr></table></figure>
 
 <p>See the problem? Data type of EmpId column on line 2 is varchar(10) and the data type of empIdFilter is varchar(9).</p>
 <p>Therefore, ISNULL will convert varchar(10) to varchar(9) resulting in truncation. Now imagine this in a stored procedure where the EmpId column datatype is not obvious and filter variable is declared somewhere far away from the SQL statement. It becomes a pretty insidious bug.</p>
 <p>In order to avoid this, you can write your SQL statement like this.</p>
-<figure class="highlight sql">
-
-<table>
-
-<tbody>
-
-<tr>
-
-<td class="gutter">
-
-<pre><span class="line">1</span>  
-<span class="line">2</span>  
-<span class="line">3</span>  
-<span class="line">4</span>  
-<span class="line">5</span>  
-<span class="line">6</span>  
-<span class="line">7</span>  
-<span class="line">8</span>  
-<span class="line">9</span>  
-<span class="line">10</span>  
-<span class="line">11</span>  
-<span class="line">12</span>  
-<span class="line">13</span>  
-<span class="line">14</span>  
-<span class="line">15</span>  
-<span class="line">16</span>  
-<span class="line">17</span>  
-<span class="line">18</span>  
-<span class="line">19</span>  
-<span class="line">20</span>  
-</pre>
-
-</td>
-
-<td class="code">
-
-<pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (</span>  
- <span class="line">EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)</span>  
-<span class="line">)</span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull</span>  
-<span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">select</span> *</span>  
-<span class="line"><span class="keyword">from</span></span>   
- <span class="line">@TestIsNull</span>   
-<span class="line"><span class="keyword">where</span></span>   
- <span class="line">@empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter</span>  
-<span class="line"></span>  
-<span class="line">EmpID</span>  
-<span class="line"><span class="comment">----------</span></span>  
-<span class="line"><span class="number">1234567890</span></span>  
-<span class="line"></span>  
-<span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span>  
-</pre>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</figure>
-
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>   </span><br><span class="line"> @empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line"><span class="number">1234567890</span>  </span><br><span class="line">  </span><br><span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckbw9m6rd00001wne7ygz07x2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckbz6e8yo0001lcneeifsdtdo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -296,7 +136,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
     </div>
   </div>
 
@@ -306,7 +146,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+      <a href="/tags/ADSD/" style="font-size: 10px;">ADSD</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
     </div>
   </div>
 
@@ -315,7 +155,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -326,6 +166,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/">Perils of Request/Response in the age of distributed systems</a>
+          </li>
         
           <li>
             <a href="/2019/01/15/Remote-Work/">Remote Work Revolution</a>

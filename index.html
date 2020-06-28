@@ -64,6 +64,129 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Works-on-my-machine" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/28/Works-on-my-machine/" class="article-date">
+  <time datetime="2020-06-28T13:43:44.000Z" itemprop="datePublished">2020-06-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of posts to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>In the previous <a href="../../../2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems">post</a>, we demonstrated the unreliability of request/response.</p>
+<p>If such a trivial example can show how unreliable request/response <em>could</em> be, why do we continue to write similar type of code?</p>
+<p>The problem is request/response code may work in production without any issues for a long time. However, if and when the conditions are right we may receive a bug report about lost data and/or duplicate processing etc. </p>
+<ul>
+<li>Unit tests pass</li>
+<li>Integration tests pass</li>
+<li>End to End test pass<br>(If any of these had failed, we would not have deployed to production anyways right?)</li>
+</ul>
+<p>At this point, we may attempt to reproduce the issue manually.<br>Most of the developers have some sort of local setup where we start up each dependent service on our machine and proceed with debugging. The services involved may be logically separate but they are not physically separate (all running on the same machine - more on this on another post). No dice, close the JIRA ticket with comment.</p>
+<blockquote>
+<p>Cannot reproduce.</p>
+</blockquote>
+<p>Congratulations on joining the <a href="https://blog.codinghorror.com/the-works-on-my-machine-certification-program/" target="_blank" rel="noopener">Works on my machine</a> club.</p>
+<p><a href=""><img src="/images/works_on_my_machine.png" alt="Works on my machine"></a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckbz6e8ys0003lcne25gi2o0h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Perils-of-Request-Response-in-the-age-of-distributed-systems" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/" class="article-date">
+  <time datetime="2020-06-26T23:40:22.000Z" itemprop="datePublished">2020-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/">Perils of Request/Response in the age of distributed systems</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of posts to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
+<p>Let’s set the stage by stating our end goal.</p>
+<blockquote>
+<p>Design and build performant, maintainable and resilient software systems where adding the 200th feature is as fast and easy as adding the first.</p>
+</blockquote>
+<p>We will start with reliability. Everyone knows that network is not reliable. However, we continue to write code similar to this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
+<ol>
+<li><p>Need to send some data to a remote service for a long running workflow.</p>
+</li>
+<li><p>Invoke a synchronous call and wait for response.</p>
+</li>
+<li><p>Get a timeout exception</p>
+<p>Here are some posibble scenarios</p>
+<ul>
+<li>Data did not arrive at the server </li>
+<li>Data arrived, service did not complete processing before timeout.</li>
+</ul>
+<p>At this point client does not know what to do; this is important data needs to processed. </p>
+<ul>
+<li>Resend and risk duplicate processing? </li>
+<li>Write service code to handle deduplication? What if we don’t own the service?</li>
+<li>What do we tell the user? I know “An unexpected error occurred” :)</li>
+</ul>
+<p>The bottom line is:</p>
+<blockquote>
+<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later and production, some other thing will blow up and you’ll discover oh except that one.<br>-Udi Dahan</p>
+</blockquote>
+</li>
+</ol>
+<p>Today I learned: It is very difficult to build reliable systems on top of http with request/response (remote procedure calling-RPC, REST, Web Services etc. )</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/" data-id="ckbz6e8yv0005lcnehu271hkl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="title-Remote-Work" class="article article-type-title" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/15/Remote-Work/" class="article-date">
@@ -86,8 +209,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Test<br>Remote work opportunities are on the rise. <a href="https://www.census.gov/library/visualizations/2013/comm/home_based_workers.html" target="_blank" rel="noopener">US Census Bureau</a> documented that more people are working from home.</p>
-<p>The largest programming community website Stackoverflow added a remote checkbox to their jobs page recently.<br><a href="https://asunar.github.io/images/stackoverflow.png" target="_blank" rel="noopener" title="Stackoverflow Jobs Redesign"><img src="/images/stackoverflow.png" alt="Stackoverflow Jobs Redesign" title="Stackoverflow Jobs Redesign"></a><span class="caption">Stackoverflow Jobs Redesign</span></p>
+        <p>Remote work opportunities are on the rise. <a href="https://www.census.gov/library/visualizations/2013/comm/home_based_workers.html" target="_blank" rel="noopener">US Census Bureau</a> documented that more people are working from home.</p>
+<p>The largest programming community website Stackoverflow added a remote checkbox to their jobs page recently.<br><a href=""><img src="/images/stackoverflow.png" alt=""></a></p>
 <p>It is hard to ignore effects on recruiting.<br><a href="https://asunar.github.io/images/revolution_small.png" target="_blank" rel="noopener"><img src="/images/revolution_small.png" alt="" title="Revolution"></a></p>
 <p>While certain companies continue to rule out remote work (Netflix, Yahoo, Slack(!)), many others are embracing it. There are also some companies that are stuck somewhere in the middle. A prime example of this is Microsoft, there are several prominent technologists working remotely for Microsoft. However, there is no obvious way to search for a remote position in Microsoft’s careers site. Does Microsoft allow remote work? It depends…</p>
 <blockquote>
@@ -115,7 +238,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckbw9m6rj00011wne9unpe3xs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckbz6e8yi0000lcnea9dk2nku" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
@@ -175,12 +298,12 @@
 <blockquote>
 <p>In the future, all the code you ever write will be business logic. - Werner Vogels (Chief Technology Officer of Amazon)</p>
 </blockquote>
-<p><del>Coming soon</del> <a href="../../../01/15/Remote-Work">Remote Work</a> .</p>
+<p><del>Coming soon</del> <a href="../../../2019/01/15/Remote-Work">Remote Work</a> .</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckbw9m6rl00021wnecxoz3jqn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckbz6e8yu0004lcne8xh23lpf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -213,179 +336,19 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>Did you know that SQL Server’s IsNull() function does an implicit conversion?</p>
-<figure class="highlight sql">
-
-<table>
-
-<tbody>
-
-<tr>
-
-<td class="gutter">
-
-<pre><span class="line">1</span>  
-</pre>
-
-</td>
-
-<td class="code">
-
-<pre><span class="line">ISNULL ( check_expression , replacement_value )</span>  
-</pre>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</figure>
-
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ISNULL ( check_expression , replacement_value)</span><br></pre></td></tr></table></figure>
 <p>The documentation explicitly states that</p>
 <p>The value of check_expression is returned if it is not NULL; otherwise, replacement_value is returned after <strong>it is implicitly converted to the type of check_expression, if the types are different. replacement_value can be truncated if replacement_value is longer than check_expression.</strong> (emphasis mine)</p>
-<figure class="highlight sql">
-
-<table>
-
-<tbody>
-
-<tr>
-
-<td class="gutter">
-
-<pre><span class="line">1</span>  
-<span class="line">2</span>  
-<span class="line">3</span>  
-<span class="line">4</span>  
-<span class="line">5</span>  
-<span class="line">6</span>  
-<span class="line">7</span>  
-<span class="line">8</span>  
-<span class="line">9</span>  
-<span class="line">10</span>  
-<span class="line">11</span>  
-<span class="line">12</span>  
-<span class="line">13</span>  
-<span class="line">14</span>  
-<span class="line">15</span>  
-<span class="line">16</span>  
-<span class="line">17</span>  
-<span class="line">18</span>  
-<span class="line">19</span>  
-</pre>
-
-</td>
-
-<td class="code">
-
-<pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (</span>  
- <span class="line">EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)</span>  
-<span class="line">)</span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull</span>  
-<span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">select</span> *</span>  
-<span class="line"><span class="keyword">from</span></span>   
- <span class="line">@TestIsNull</span>   
-<span class="line"><span class="keyword">where</span></span>  
- <span class="line">empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)</span>  
-<span class="line"></span>  
-<span class="line">EmpID</span>  
-<span class="line"><span class="comment">----------</span></span>  
-<span class="line"></span>  
-<span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span>  
-</pre>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>  </span><br><span class="line"> empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line">  </span><br><span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span><br></pre></td></tr></table></figure>
 
 <p>See the problem? Data type of EmpId column on line 2 is varchar(10) and the data type of empIdFilter is varchar(9).</p>
 <p>Therefore, ISNULL will convert varchar(10) to varchar(9) resulting in truncation. Now imagine this in a stored procedure where the EmpId column datatype is not obvious and filter variable is declared somewhere far away from the SQL statement. It becomes a pretty insidious bug.</p>
 <p>In order to avoid this, you can write your SQL statement like this.</p>
-<figure class="highlight sql">
-
-<table>
-
-<tbody>
-
-<tr>
-
-<td class="gutter">
-
-<pre><span class="line">1</span>  
-<span class="line">2</span>  
-<span class="line">3</span>  
-<span class="line">4</span>  
-<span class="line">5</span>  
-<span class="line">6</span>  
-<span class="line">7</span>  
-<span class="line">8</span>  
-<span class="line">9</span>  
-<span class="line">10</span>  
-<span class="line">11</span>  
-<span class="line">12</span>  
-<span class="line">13</span>  
-<span class="line">14</span>  
-<span class="line">15</span>  
-<span class="line">16</span>  
-<span class="line">17</span>  
-<span class="line">18</span>  
-<span class="line">19</span>  
-<span class="line">20</span>  
-</pre>
-
-</td>
-
-<td class="code">
-
-<pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (</span>  
- <span class="line">EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)</span>  
-<span class="line">)</span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull</span>  
-<span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span></span>  
-<span class="line"></span>  
-<span class="line"><span class="keyword">select</span> *</span>  
-<span class="line"><span class="keyword">from</span></span>   
- <span class="line">@TestIsNull</span>   
-<span class="line"><span class="keyword">where</span></span>   
- <span class="line">@empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter</span>  
-<span class="line"></span>  
-<span class="line">EmpID</span>  
-<span class="line"><span class="comment">----------</span></span>  
-<span class="line"><span class="number">1234567890</span></span>  
-<span class="line"></span>  
-<span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span>  
-</pre>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</figure>
-
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>   </span><br><span class="line"> @empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line"><span class="number">1234567890</span>  </span><br><span class="line">  </span><br><span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckbw9m6rd00001wne7ygz07x2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckbz6e8yo0001lcneeifsdtdo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -408,7 +371,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
     </div>
   </div>
 
@@ -418,7 +381,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+      <a href="/tags/ADSD/" style="font-size: 10px;">ADSD</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
     </div>
   </div>
 
@@ -427,7 +390,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -438,6 +401,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/">Perils of Request/Response in the age of distributed systems</a>
+          </li>
         
           <li>
             <a href="/2019/01/15/Remote-Work/">Remote Work Revolution</a>
