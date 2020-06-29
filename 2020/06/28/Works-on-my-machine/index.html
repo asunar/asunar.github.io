@@ -16,8 +16,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/images/works_on_my_machine.png">
 <meta property="article:published_time" content="2020-06-28T13:43:44.000Z">
-<meta property="article:modified_time" content="2020-06-28T14:34:11.474Z">
+<meta property="article:modified_time" content="2020-06-29T16:02:39.018Z">
 <meta property="article:author" content="Alper Sunar">
+<meta property="article:tag" content="ADSD">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/works_on_my_machine.png">
   
@@ -90,7 +91,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of posts to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
 <p>In the previous <a href="../../../2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems">post</a>, we demonstrated the unreliability of request/response.</p>
 <p>If such a trivial example can show how unreliable request/response <em>could</em> be, why do we continue to write similar type of code?</p>
 <p>The problem is request/response code may work in production without any issues for a long time. However, if and when the conditions are right we may receive a bug report about lost data and/or duplicate processing etc. </p>
@@ -99,7 +100,7 @@
 <li>Integration tests pass</li>
 <li>End to End test pass<br>(If any of these had failed, we would not have deployed to production anyways right?)</li>
 </ul>
-<p>At this point, we may attempt to reproduce the issue manually.<br>Most of the developers have some sort of local setup where we start up each dependent service on our machine and proceed with debugging. The services involved may be logically separate but they are not physically separate (all running on the same machine - more on this on another post). No dice, close the JIRA ticket with comment.</p>
+<p>At this point, we may attempt to reproduce the issue manually.<br>Most of the developers have some sort of local setup where we start up each dependent service on our machine and proceed with debugging. The services involved may be logically separate but they are not physically separate (all running on the same machine - more on this on another post). Manual test, click here and there. No dice, close the JIRA ticket with comment.</p>
 <blockquote>
 <p>Cannot reproduce.</p>
 </blockquote>
@@ -109,14 +110,25 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckbz6e8ys0003lcne25gi2o0h" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckc0p0d65000624ned47nb12r" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/06/28/Request-Response-Performance/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Request/Response Performance
+        
+      </div>
+    </a>
   
   
     <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/" id="article-nav-older" class="article-nav-link-wrap">
@@ -150,7 +162,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ADSD/" style="font-size: 10px;">ADSD</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
     </div>
   </div>
 
@@ -172,6 +184,10 @@
       <ul>
         
           <li>
+            <a href="/2020/06/28/Request-Response-Performance/">Request/Response Performance</a>
+          </li>
+        
+          <li>
             <a href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
           </li>
         
@@ -185,10 +201,6 @@
         
           <li>
             <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/">Trends/Predictions for the Software Industry</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/10/Perils-of-IsNull-Function/">Perils of IsNull Function</a>
           </li>
         
       </ul>
