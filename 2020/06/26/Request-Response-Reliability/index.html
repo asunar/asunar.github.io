@@ -5,17 +5,17 @@
   
 
   
-  <title>Request/Response Performance | Code is Liability</title>
+  <title>Request/Response Reliability | Code is Liability</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. It’s time to analyze the performance characteristics of synchronous">
+  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Request&#x2F;Response Performance">
-<meta property="og:url" content="http://yoursite.com/2020/06/29/Request-Response-Performance/index.html">
+<meta property="og:title" content="Request&#x2F;Response Reliability">
+<meta property="og:url" content="http://yoursite.com/2020/06/26/Request-Response-Reliability/index.html">
 <meta property="og:site_name" content="Code is Liability">
-<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. It’s time to analyze the performance characteristics of synchronous">
+<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-06-29T14:43:22.000Z">
-<meta property="article:modified_time" content="2020-06-29T16:05:45.886Z">
+<meta property="article:published_time" content="2020-06-26T23:40:22.000Z">
+<meta property="article:modified_time" content="2020-07-02T14:01:41.055Z">
 <meta property="article:author" content="Alper Sunar">
 <meta property="article:tag" content="ADSD">
 <meta name="twitter:card" content="summary">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Request-Response-Performance" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Request-Response-Reliability" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/29/Request-Response-Performance/" class="article-date">
-  <time datetime="2020-06-29T14:43:22.000Z" itemprop="datePublished">2020-06-29</time>
+    <a href="/2020/06/26/Request-Response-Reliability/" class="article-date">
+  <time datetime="2020-06-26T23:40:22.000Z" itemprop="datePublished">2020-06-26</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Request/Response Performance
+      Request/Response Reliability
     </h1>
   
 
@@ -90,35 +90,44 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
-<p>It’s time to analyze the performance characteristics of synchronous request/response operations as in the case of making REST/gRPC/Web Services to call one or more (micro)services, databases.</p>
-<p>Typical scenario where the server is running a language with a Garbage Collector to free up memory (Java, .NET languages)</p>
-<ul>
-<li>Client sends a request to the server</li>
-<li>Server receives the request</li>
-<li>Memory is allocated to get info out the request, stored on the heap</li>
-<li>Server sends a request to another microservice or database</li>
-<li>Server waits for a response for that request</li>
-<li>Garbage Collector (GC) comes (after some miliseconds) and asks: Are you done with that memory?</li>
-<li>Server: Nope, still waiting</li>
-<li>GC: No problem, marks memory as Gen1</li>
-<li>GC comes back (after some miliseconds) and asks: Done yet?</li>
-<li>Server: Nope, still waiting</li>
-<li>GC: No problem, marks memory as Gen2</li>
-<li>Now that memory is pinned. The only way to get it out of Gen2 is to do a global GC.Collect</li>
-<li>Response comes back but GC DOES NOT clear regular memory in Gen2, just the disposables that have gone out of scope.</li>
-<li>GC.Collect will freeze ALL THE THREADS while GC goes and cleans up the memory in Gen2.</li>
-</ul>
-<p>I was one of those people who thought that async/await fixes this problem.</p>
+<p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
+<p>Let’s set the stage by stating our end goal.</p>
 <blockquote>
-<p>No, it doesn’t. That just means the thread gets out of the way so you can take on another request. That actually means you’re gonna fill up faster and use more memory quicker and maybe fail quicker. It is not a solution.<br>-David Boike</p>
+<p>Design and build performant, maintainable and resilient software systems where adding the 200th feature is as fast and easy as adding the first.</p>
 </blockquote>
-<p>Thanks to <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">ADSD</a> course and to <a href="https://www.youtube.com/watch?v=aE-p0cfwTVU" target="_blank" rel="noopener">David’s Boike’s presentation</a>, I now understand how under sufficient load, long running queries can exhaust all the memory on a web server. </p>
-<p>Today I learned: In addition to being <a href="../../../2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/">unreliable</a> request/response style interaction does not scale well under load. </p>
+<p>We will start with reliability. Everyone knows that network is not reliable. However, we continue to write code similar to this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
+<ol>
+<li><p>Need to send some data to a remote service for a long running workflow.</p>
+</li>
+<li><p>Invoke a synchronous call and wait for response.</p>
+</li>
+<li><p>Get a timeout exception</p>
+<p>Here are some posibble scenarios</p>
+<ul>
+<li>Data did not arrive at the server </li>
+<li>Data arrived, service did not complete processing before timeout.</li>
+</ul>
+<p>At this point client does not know what to do; this is important data needs to processed. </p>
+<ul>
+<li>Resend and risk duplicate processing? </li>
+<li>Write service code to handle deduplication? What if we don’t own the service?</li>
+<li>What do we tell the user? I know “An unexpected error occurred” :)</li>
+</ul>
+<p>The bottom line is:</p>
+<blockquote>
+<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br>-Udi Dahan</p>
+</blockquote>
+</li>
+</ol>
+<p>Today I learned: It is very difficult to build reliable systems on top of http with request/response (remote procedure calling-RPC, REST, Web Services etc.)</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Performance/" data-id="ckc0p2lz80008xkne547b5zyr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="ckc4v1g39000694nee6f54a2b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -129,10 +138,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2020/06/28/Works-on-my-machine/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Works on my machine
+        
+      </div>
+    </a>
   
-    <a href="/2020/06/28/Works-on-my-machine/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2019/01/15/Remote-Work/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Works on my machine</div>
+      <div class="article-nav-title">Remote Work Revolution</div>
     </a>
   
 </nav>
@@ -183,7 +201,7 @@
       <ul>
         
           <li>
-            <a href="/2020/06/29/Request-Response-Performance/">Request/Response Performance</a>
+            <a href="/2020/06/29/Request-Response-Scalability/">Request/Response Scalability</a>
           </li>
         
           <li>
@@ -191,7 +209,7 @@
           </li>
         
           <li>
-            <a href="/2020/06/26/Perils-of-Request-Response-in-the-age-of-distributed-systems/">Perils of Request/Response in the age of distributed systems</a>
+            <a href="/2020/06/26/Request-Response-Reliability/">Request/Response Reliability</a>
           </li>
         
           <li>
