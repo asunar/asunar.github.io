@@ -5,19 +5,22 @@
   
 
   
-  <title>Trends/Predictions for the Software Industry | Code is Liability</title>
+  <title>Request/Response Performance | Code is Liability</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="It is that time of the year when most people reflect on the past and make plans&#x2F;predictions for the future. I have been having some conversations with my colleagues and wanted to put my thoughts on th">
+  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. We will focus on performance aspects of request&#x2F;response interaction">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Trends&#x2F;Predictions for the Software Industry">
-<meta property="og:url" content="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/index.html">
+<meta property="og:title" content="Request&#x2F;Response Performance">
+<meta property="og:url" content="http://yoursite.com/2020/07/02/Request-Response-Performance/index.html">
 <meta property="og:site_name" content="Code is Liability">
-<meta property="og:description" content="It is that time of the year when most people reflect on the past and make plans&#x2F;predictions for the future. I have been having some conversations with my colleagues and wanted to put my thoughts on th">
+<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. We will focus on performance aspects of request&#x2F;response interaction">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-01-13T14:21:46.000Z">
-<meta property="article:modified_time" content="2020-06-28T14:39:21.748Z">
+<meta property="og:image" content="http://yoursite.com/images/scaled_latency.png">
+<meta property="article:published_time" content="2020-07-03T01:40:51.000Z">
+<meta property="article:modified_time" content="2020-07-03T01:40:51.167Z">
 <meta property="article:author" content="Alper Sunar">
+<meta property="article:tag" content="ADSD">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/scaled_latency.png">
   
     <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
   
@@ -66,10 +69,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Trends-Predictions-for-the-Software-Industry" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Request-Response-Performance" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/" class="article-date">
-  <time datetime="2019-01-13T14:21:46.000Z" itemprop="datePublished">2019-01-13</time>
+    <a href="/2020/07/02/Request-Response-Performance/" class="article-date">
+  <time datetime="2020-07-03T01:40:51.000Z" itemprop="datePublished">2020-07-02</time>
 </a>
     
   </div>
@@ -80,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Trends/Predictions for the Software Industry
+      Request/Response Performance
     </h1>
   
 
@@ -88,59 +91,40 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>It is that time of the year when most people reflect on the past and make plans/predictions for the future. I have been having some conversations with my colleagues and wanted to put my thoughts on the two main trends dominating the software industry on <em>“paper”</em>.</p>
-<h2 id="Serverless-and-Remote-Work"><a href="#Serverless-and-Remote-Work" class="headerlink" title="Serverless and Remote Work"></a><a href="#Serverless-and-Remote-Work" title="Serverless and Remote Work"></a>Serverless and Remote Work</h2><p>Serverless software applications and architectures will dominate the software landscape in the coming years in my opinion. Serverless coupled with wider adoption of remote work arrangements may have further downstream effects on everything from real estate to social mobility in the developing world.</p>
-<p>If software is eating the world, analyzing the trends that affect software construction may yield interesting insights.</p>
-<h2 id="Serverless"><a href="#Serverless" class="headerlink" title="Serverless"></a><a href="#Serverless" title="Serverless "></a>Serverless</h2><p>Serverless software applications are usually</p>
-<ul>
-<li>Event-driven ( someone clicked on a link/uploaded a file, it is 4am on a Tuesday i.e. code runs in response to an event )</li>
-<li>Stateless ( don’t store any data )</li>
-<li>Billed only for the milliseconds they run</li>
-</ul>
-<p>It is called Serverless because someone else (like Amazon Web Services(AWS) or Microsoft Azure) runs and maintains the servers.</p>
-<p>Why is this important? As an organization who uses/maintains software to run the business, think about the things one does <strong>NOT</strong> need to worry about :</p>
-<ul>
-<li>Operating system updates ( ex. security updates, upgrade to Windows 16 etc. )</li>
-<li>Network attack surface (no continuously running servers that may be prone to attacks)</li>
-<li>Each process gets its own entire compute env (someone accidentally uploading a huge file should not affect any other users)</li>
-<li>Paying for server/database licenses, system/server/network admin salaries<br>(if you happen to work in one of these areas and worry about being phased out read <a href="https://www.susanjfowler.com/blog/2016/10/13/the-ops-identity-crisis" target="_blank" rel="noopener">this</a>)</li>
-</ul>
-<p>In a nutshell, serverless will free businesses to spend more of their time and resources on improving the core business. On second thought, make that <em>smart businesses</em>; there will always be companies that are resistant to change.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>We will focus on performance aspects of request/response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
 <blockquote>
-<p>The avalanche has begun, it’s too late for the pebbles to vote. - Ambassador Kosh</p>
+<p>Latency: Time to cross the network in one direction.</p>
 </blockquote>
-<p>If an organization can use an authentication service, data storage service, email service etc. that can scale automatically based on the need and pay for only what they use, why would they not do it? This will almost certainly be cheaper than paying software developer salaries to build these services in-house.</p>
-<p>Given that most companies will want to do more with less, what will the already employed software engineers work on? Werner Vogels may have the answer here.</p>
+<p>Remember that latency does not include any processing time (serialization/deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
+<p><a href=""><img src="/images/scaled_latency.png" alt=""></a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> importantService = <span class="keyword">new</span> ImportantService();</span><br><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Assuming that we’re making a remote call across the US, we can conclude that -relatively speaking- if the first line takes 1 second, the second line will take 4 years. Let that sink in for a moment.</p>
 <blockquote>
-<p>In the future, all the code you ever write will be business logic. - Werner Vogels (Chief Technology Officer of Amazon)</p>
+<p>Bandwidth: the capacity for data transfer of an electronic communications system</p>
 </blockquote>
-<p><del>Coming soon</del> <a href="../../../2019/01/15/Remote-Work">Remote Work</a>.</p>
+<p>Bandwidth is not usually measured. Most developers are not even aware of the bandwidth that is available for their applications in production. Hence the fallacy: Bandwidth is unlimited. Traditionally, the amount of data processed by the software systems grew much faster than bandwidth capacity. The network will obviously affect the performance of your application. </p>
+<h4 id="Example-Gigabit-internet-128mb-sec"><a href="#Example-Gigabit-internet-128mb-sec" class="headerlink" title="Example: Gigabit internet= 128mb/sec"></a>Example: Gigabit internet= 128mb/sec</h4><h4 id="Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost"><a href="#Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost" class="headerlink" title="Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)"></a>Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckc5jzm1j0004bsne5pqy6rra" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="ckc5jzm1f0002bsne65sa79kx" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2019/01/15/Remote-Work/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Remote Work Revolution
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/12/10/Perils-of-IsNull-Function/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/06/29/Request-Response-Scalability/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Perils of IsNull Function</div>
+      <div class="article-nav-title">Request/Response Scalability</div>
     </a>
   
 </nav>

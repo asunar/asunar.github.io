@@ -64,6 +64,59 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Request-Response-Performance" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/02/Request-Response-Performance/" class="article-date">
+  <time datetime="2020-07-03T01:40:51.000Z" itemprop="datePublished">2020-07-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>We will focus on performance aspects of request/response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
+<blockquote>
+<p>Latency: Time to cross the network in one direction.</p>
+</blockquote>
+<p>Remember that latency does not include any processing time (serialization/deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
+<p><a href=""><img src="/images/scaled_latency.png" alt=""></a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> importantService = <span class="keyword">new</span> ImportantService();</span><br><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Assuming that we’re making a remote call across the US, we can conclude that -relatively speaking- if the first line takes 1 second, the second line will take 4 years. Let that sink in for a moment.</p>
+<blockquote>
+<p>Bandwidth: the capacity for data transfer of an electronic communications system</p>
+</blockquote>
+<p>Bandwidth is not usually measured. Most developers are not even aware of the bandwidth that is available for their applications in production. Hence the fallacy: Bandwidth is unlimited. Traditionally, the amount of data processed by the software systems grew much faster than bandwidth capacity. The network will obviously affect the performance of your application. </p>
+<h4 id="Example-Gigabit-internet-128mb-sec"><a href="#Example-Gigabit-internet-128mb-sec" class="headerlink" title="Example: Gigabit internet= 128mb/sec"></a>Example: Gigabit internet= 128mb/sec</h4><h4 id="Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost"><a href="#Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost" class="headerlink" title="Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)"></a>Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="ckc5jzm1f0002bsne65sa79kx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Request-Response-Scalability" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/29/Request-Response-Scalability/" class="article-date">
@@ -115,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="ckc5h9jr90001lgnebixy9xlf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="ckc5jzm1l0005bsnefits95wy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -168,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckc5h9jrg0006lgne7306dy3l" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckc5jzm1n0009bsnegtp1gmh8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -218,12 +271,12 @@
 <li><p>Invoke a synchronous call and wait for response.</p>
 </li>
 <li><p>Get a timeout exception</p>
-<p>Here are some posibble scenarios</p>
+<p>Here are some possible scenarios</p>
 <ul>
 <li>Data did not arrive at the server </li>
 <li>Data arrived, service did not complete processing before timeout.</li>
 </ul>
-<p>At this point client does not know what to do; this is important data needs to processed. </p>
+<p>At this point client does not know what to do; this is important data that needs to processed. </p>
 <ul>
 <li>Resend and risk duplicate processing? </li>
 <li>Write service code to handle deduplication? What if we don’t own the service?</li>
@@ -240,7 +293,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="ckc5h9jrc0002lgne6ksk12e3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="ckc5jzm1m0006bsnedyes3v4z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -303,7 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckc5h9jre0004lgneglzt2e55" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckc5jzm1d0001bsne4gl51xf9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
@@ -368,7 +421,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckc5h9jrf0005lgneg6csbq24" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckc5jzm1j0004bsne5pqy6rra" class="article-share-link">Share</a>
       
       
     </footer>
@@ -413,7 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckc5h9jr20000lgne691kgjfz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckc5jzm160000bsneff7c4cw8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -455,7 +508,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -466,6 +519,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+          </li>
         
           <li>
             <a href="/2020/06/29/Request-Response-Scalability/">Request/Response Scalability</a>
@@ -481,10 +538,6 @@
         
           <li>
             <a href="/2019/01/15/Remote-Work/">Remote Work Revolution</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/">Trends/Predictions for the Software Industry</a>
           </li>
         
       </ul>
