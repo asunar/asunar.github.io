@@ -64,6 +64,77 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Request-Response-to-Service-Boundaries" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/09/Request-Response-to-Service-Boundaries/" class="article-date">
+  <time datetime="2020-07-09T23:50:40.000Z" itemprop="datePublished">2020-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>In this post, we will conclude our request/response analysis. We know that request/response may be <a href="../../../2020/06/26/Request-Response-Reliability/">unreliable</a>, <a href="../../../2020/07/02/Request-Response-Performance/">slow</a> and not <a href="../../../2020/06/29/Request-Response-Scalability/">scalable</a>. </p>
+<p>However, it is not possible to completely avoid using request/response and still build a useful software system. Is there an alternative? </p>
+<p>There is good news and bad news. The good news is that we can create reliable, scalable and performant software systems by strictly adhering to the proven principles that have been around for a long time such as loose coupling (more on this later) and encapsulation.</p>
+<p>The bad news is that it is challenging to adhere to the principles in the face of marketing from tech vendors and cargo cult programming (Netflix, Uber are building microservices so should we… <a href="http://highscalability.com/blog/2020/4/8/one-team-at-uber-is-moving-from-microservices-to-macroservic.html" target="_blank" rel="noopener">not so fast</a>).</p>
+<blockquote style="text-align:left; line-height:1.5">
+All you need to know about software:<br />Tightly coupled designs donot work.<br />Highly cohesive, encapsulated software loosely coupled from other<br />highly cohesive, encapsulated software work. <br /> 
+-Udi Dahan (paraphrased)
+</blockquote>
+
+<p>It is sort of an anticlimactic reveal. You would be hard pressed to find any software developer who have not heard these terms.</p>
+<p>In traditional Object Oriented Design nouns become entities, relationships between the entities lead to entity-relationship diagrams (Customer, Order, CustomerOrder etc.) and that usually leads to architectures requiring quite a bit of request/response to do anything useful.</p>
+<p>One of the issues with this approach is that we end up putting attributes that do not need to change together in the same place. In a typical Customer among other attributes object, we may see:</p>
+<ul>
+<li>Name</li>
+<li>Date of Birth</li>
+<li>Address</li>
+</ul>
+<p>If a customer’s name does not change when they move, name and address donot need to be stored together.</p>
+<p>This understanding leads us to one of the most important aspects of the distributed systems design: <a href="https://particular.net/webinars/finding-your-service-boundaries-a-practical-guide" target="_blank" rel="noopener">Finding your service boundaries</a>. </p>
+<p>In a nutshell,</p>
+<ul>
+<li>Design and understand user workflows</li>
+<li>Determine the pieces of data needed to enable the workflows</li>
+<li>Organize pieces of data into <strong>randomly named</strong> piles</li>
+<li>Identify messages/events needed for coordination between the piles</li>
+<li>Name the piles (like CustomerLoyaltyService, ShippingService etc. )</li>
+</ul>
+<p>When teams follow this exercise they realize that the traditional singular “Customer” entity does not exist anymore. First name and last name is in this pile(service to be named later), shipping address is in that pile and loyalty status info is in that pile over there. Effectively, we have exploded the customer entity and distributed its attributes to many piles(prospective services). Ideally, these piles have an ID, customer attributes they are responsible for <strong>and nothing else</strong> so each can totally perform their respective business capability independently. That is what makes them a service.</p>
+<blockquote>
+<p>Service is the technical authority for a given business capability.<br>-Udi Dahan</p>
+</blockquote>
+<p>Note that I am oversimplifying the process here for the purposes of brevity. The process of identifying how the domain breaks down is reportedly a long, difficult and thankless process. Adam Ralph does a great job explaining the nuances in the webinar linked above. In reality, armed with the principles such as minimal request/response and no data sharing between services (no publishing events like CustomerAddressUpdated) it is a process of trial and error.</p>
+<p>These aspects of the service boundary discovery process make it challenging to provide a nice explanation with examples in a blog post. Even the most experienced software architects describe it similar to bumping around in the dark and trying to get a sense of what the shape of the world around you -maybe for days- until discovering some insight.</p>
+<p>It’s no surprise then why this approach is not popular among agile teams biased towards action who prefer working software over documentation, work in sprints and timebox their “spikes”.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="ckcfh4ulo000a6wne3kuyd7kv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Request-Response-Performance" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/07/02/Request-Response-Performance/" class="article-date">
@@ -105,7 +176,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="ckc5jzm1f0002bsne65sa79kx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="ckcfh4ulh00026wnebi5r8jwe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -168,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="ckc5jzm1l0005bsnefits95wy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="ckcfh4ull00046wneahlj6gr2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -221,7 +292,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckc5jzm1n0009bsnegtp1gmh8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckcfh4uln00096wne9fcn0191" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -293,7 +364,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="ckc5jzm1m0006bsnedyes3v4z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="ckcfh4ulm00066wneh5qo5v1y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -356,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckc5jzm1d0001bsne4gl51xf9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckcfh4ulf00016wnegx40c326" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
@@ -421,7 +492,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckc5jzm1j0004bsne5pqy6rra" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckcfh4ull00056wne7twb5vas" class="article-share-link">Share</a>
       
       
     </footer>
@@ -466,7 +537,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckc5jzm160000bsneff7c4cw8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckcfh4ul800006wne102kb19t" class="article-share-link">Share</a>
       
       
     </footer>
@@ -521,6 +592,10 @@
       <ul>
         
           <li>
+            <a href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
           </li>
         
@@ -534,10 +609,6 @@
         
           <li>
             <a href="/2020/06/26/Request-Response-Reliability/">Request/Response Reliability</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/15/Remote-Work/">Remote Work Revolution</a>
           </li>
         
       </ul>
