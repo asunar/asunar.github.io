@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Code is Liability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Code is Liability">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Code is Liability">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Alper Sunar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Code is Liability</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Coupling" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/10/Coupling/" class="article-date">
+  <time datetime="2020-07-10T12:53:28.000Z" itemprop="datePublished">2020-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/10/Coupling/">Coupling</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>Coupling is one of the fundamental concepts that affects the maintainability of software systems as discussed <a href="../../../2020/07/09/Request-Response-to-Service-Boundaries/">before</a>.  Coupling measures how dependent are the components of the system on one another. </p>
+<ul>
+<li>Incoming coupling: who depends on you (aka afferent coupling)</li>
+<li>Outcoming coupling: who you depend on (aka efferent coupling) </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">Component</th>
+<th align="center">Incoming</th>
+<th align="center">Outgoing</th>
+<th>Comment</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">A</td>
+<td align="center">5</td>
+<td align="center">0</td>
+<td>Called by many, does not call others; not necessarily bad</td>
+<td>Logging library</td>
+</tr>
+<tr>
+<td align="center">B</td>
+<td align="center">0</td>
+<td align="center">5</td>
+<td>Calls many others, not called by others; not necessarily bad</td>
+<td>UI layer code, Controllers</td>
+</tr>
+<tr>
+<td align="center">C</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td>Calls many others and called by many; needs investigation</td>
+<td>Higher numbers: recipe for disaster</td>
+</tr>
+<tr>
+<td align="center">D</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td>Does not call or get called by others</td>
+<td>Useless code, better deleted</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/10/Coupling/" data-id="cksgxb5ez0000vb0u8nkhfwvh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Request-Response-to-Service-Boundaries" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/09/Request-Response-to-Service-Boundaries/" class="article-date">
+  <time datetime="2020-07-09T23:50:40.000Z" itemprop="datePublished">2020-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>In this post, we will conclude our request/response analysis. We know that request/response may be <a href="../../../2020/06/26/Request-Response-Reliability/">unreliable</a>, <a href="../../../2020/07/02/Request-Response-Performance/">slow</a> and not <a href="../../../2020/06/29/Request-Response-Scalability/">scalable</a>. </p>
+<p>However, it is not possible to completely avoid using request/response and still build a useful software system. Is there an alternative? </p>
+<p>There is good news and bad news. The good news is that we can create reliable, scalable and performant software systems by strictly adhering to the proven principles that have been around for a long time such as loose coupling (more on this later) and encapsulation.</p>
+<p>The bad news is that it is challenging to adhere to the principles in the face of marketing from tech vendors and cargo cult programming (Netflix, Uber are building microservices so should we… <a href="http://highscalability.com/blog/2020/4/8/one-team-at-uber-is-moving-from-microservices-to-macroservic.html" target="_blank" rel="noopener">not so fast</a>).</p>
+<blockquote style="text-align:left; line-height:1.5">
+All you need to know about software:<br />Tightly coupled designs donot work.<br />Highly cohesive, encapsulated software loosely coupled from other<br />highly cohesive, encapsulated software work. <br /> 
+-Udi Dahan (paraphrased)
+</blockquote>
+
+<p>It is sort of an anticlimactic reveal. You would be hard pressed to find any software developer who have not heard these terms.</p>
+<p>In traditional Object Oriented Design nouns become entities, relationships between the entities lead to entity-relationship diagrams (Customer, Order, CustomerOrder etc.) and that usually leads to architectures requiring quite a bit of request/response to do anything useful.</p>
+<p>One of the issues with this approach is that we end up putting attributes that do not need to change together in the same place. In a typical Customer among other attributes object, we may see:</p>
+<ul>
+<li>Name</li>
+<li>Date of Birth</li>
+<li>Address</li>
+</ul>
+<p>If a customer’s name does not change when they move, name and address donot need to be stored together.</p>
+<p>This understanding leads us to one of the most important aspects of the distributed systems design: <a href="https://particular.net/webinars/finding-your-service-boundaries-a-practical-guide" target="_blank" rel="noopener">Finding your service boundaries</a>. </p>
+<p>In a nutshell,</p>
+<ul>
+<li>Design and understand user workflows</li>
+<li>Determine the pieces of data needed to enable the workflows</li>
+<li>Organize pieces of data into <strong>randomly named</strong> piles</li>
+<li>Identify messages/events needed for coordination between the piles</li>
+<li>Name the piles (like CustomerLoyaltyService, ShippingService etc. )</li>
+</ul>
+<p>When teams follow this exercise they realize that the traditional singular “Customer” entity does not exist anymore. First name and last name is in this pile(service to be named later), shipping address is in that pile and loyalty status info is in that pile over there. Effectively, we have exploded the customer entity and distributed its attributes to many piles(prospective services). Ideally, these piles have an ID, customer attributes they are responsible for <strong>and nothing else</strong> so each can totally perform their respective business capability independently. That is what makes them a service.</p>
+<blockquote>
+<p>Service is the technical authority for a given business capability.<br>-Udi Dahan</p>
+</blockquote>
+<p>Note that I am oversimplifying the process here for the purposes of brevity. The process of identifying how the domain breaks down is reportedly a long, difficult and thankless process. Adam Ralph does a great job explaining the nuances in the webinar linked above. In reality, armed with the principles such as minimal request/response and no data sharing between services (no publishing events like CustomerAddressUpdated) it is a process of trial and error.</p>
+<p>These aspects of the service boundary discovery process make it challenging to provide a nice explanation with examples in a blog post. Even the most experienced software architects describe it similar to bumping around in the dark and trying to get a sense of what the shape of the world around you -maybe for days- until discovering some insight.</p>
+<p>It’s no surprise then why this approach is not popular among agile teams biased towards action who prefer working software over documentation, work in sprints and timebox their “spikes”.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="cksgxb5g5000avb0u2dg47rqi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Request-Response-Performance" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/02/Request-Response-Performance/" class="article-date">
+  <time datetime="2020-07-03T01:40:51.000Z" itemprop="datePublished">2020-07-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>We will focus on performance aspects of request/response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
+<blockquote>
+<p>Latency: Time to cross the network in one direction.</p>
+</blockquote>
+<p>Remember that latency does not include any processing time (serialization/deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
+<p><a href=""><img src="/images/scaled_latency.png" alt=""></a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> importantService = <span class="keyword">new</span> ImportantService();</span><br><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Assuming that we’re making a remote call across the US, we can conclude that -relatively speaking- if the first line takes 1 second, the second line will take 4 years. Let that sink in for a moment.</p>
+<blockquote>
+<p>Bandwidth: the capacity for data transfer of an electronic communications system</p>
+</blockquote>
+<p>Bandwidth is not usually measured. Most developers are not even aware of the bandwidth that is available for their applications in production. Hence the fallacy: Bandwidth is unlimited. Traditionally, the amount of data processed by the software systems grew much faster than bandwidth capacity. The network will obviously affect the performance of your application. </p>
+<h4 id="Example-Gigabit-internet-128mb-sec"><a href="#Example-Gigabit-internet-128mb-sec" class="headerlink" title="Example: Gigabit internet= 128mb/sec"></a>Example: Gigabit internet= 128mb/sec</h4><h4 id="Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost"><a href="#Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost" class="headerlink" title="Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)"></a>Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="cksgxb5fo0004vb0u03q4fgv9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Request-Response-Scalability" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/29/Request-Response-Scalability/" class="article-date">
+  <time datetime="2020-06-29T14:43:22.000Z" itemprop="datePublished">2020-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/29/Request-Response-Scalability/">Request/Response Scalability</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>It’s time to analyze the scalability characteristics of synchronous request/response operations as in the case of making REST/gRPC/Web Services to call one or more (micro)services, databases.</p>
+<p>Typical scenario where the server is running a language with a Garbage Collector to free up memory (Java, .NET languages)</p>
+<ul>
+<li>Client sends a request to the server</li>
+<li>Server receives the request</li>
+<li>Memory is allocated to get info out the request, stored on the heap</li>
+<li>Server sends a request to another microservice or database</li>
+<li>Server waits for a response for that request</li>
+<li>Garbage Collector (GC) comes (after some miliseconds) and asks: Are you done with that memory?</li>
+<li>Server: Nope, still waiting</li>
+<li>GC: No problem, marks memory as Gen1</li>
+<li>GC comes back (after some miliseconds) and asks: Done yet?</li>
+<li>Server: Nope, still waiting</li>
+<li>GC: No problem, marks memory as Gen2</li>
+<li>Now that memory is pinned. The only way to get it out of Gen2 is to do a global GC.Collect</li>
+<li>Response comes back but GC DOES NOT clear regular memory in Gen2, just the disposables that have gone out of scope.</li>
+<li>GC.Collect will freeze ALL THE THREADS while GC goes and cleans up the memory in Gen2.</li>
+</ul>
+<p>I was one of those people who thought that async/await fixes this problem.</p>
+<blockquote>
+<p>No, it doesn’t. That just means the thread gets out of the way so you can take on another request. That actually means you’re gonna fill up faster and use more memory quicker and maybe fail quicker. It is not a solution.<br>-David Boike</p>
+</blockquote>
+<p>Thanks to <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">ADSD</a> course and to <a href="https://www.youtube.com/watch?v=aE-p0cfwTVU" target="_blank" rel="noopener">David’s Boike’s presentation</a>, I now understand how under sufficient load, long running queries can exhaust all the memory on a web server. </p>
+<p>Today I learned: In addition to being <a href="../../../../2020/06/26/Request-Response-Reliability/">unreliable</a> request/response style interaction does not scale well under load. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="cksgxb5fx0008vb0u79km9xm6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Works-on-my-machine" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/28/Works-on-my-machine/" class="article-date">
+  <time datetime="2020-06-28T13:43:44.000Z" itemprop="datePublished">2020-06-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>In the previous <a href="../../../../2020/06/26/Request-Response-Reliability">post</a>, we demonstrated the unreliability of request/response.</p>
+<p>If such a trivial example can show how unreliable request/response <em>could</em> be, why do we continue to write similar type of code?</p>
+<p>The problem is request/response code may work in production without any issues for a long time. However, if and when the conditions are right we may receive a bug report about lost data and/or duplicate processing etc. </p>
+<ul>
+<li>Unit tests pass</li>
+<li>Integration tests pass</li>
+<li>End to End test pass<br>(If any of these had failed, we would not have deployed to production anyways right?)</li>
+</ul>
+<p>At this point, we may attempt to reproduce the issue manually.<br>Most of the developers have some sort of local setup where we start up each dependent service on our machine and proceed with debugging. The services involved may be logically separate but they are not physically separate (all running on the same machine - more on this on another post). Manual test, click here and there. No dice, close the JIRA ticket with comment.</p>
+<blockquote>
+<p>Cannot reproduce.</p>
+</blockquote>
+<p>Congratulations on joining the <a href="https://blog.codinghorror.com/the-works-on-my-machine-certification-program/" target="_blank" rel="noopener">Works on my machine</a> club.</p>
+<p><a href=""><img src="/images/works_on_my_machine.png" alt="Works on my machine"></a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="cksgxb5ge000evb0uh5ma2y5s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Request-Response-Reliability" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/26/Request-Response-Reliability/" class="article-date">
+  <time datetime="2020-06-26T23:40:22.000Z" itemprop="datePublished">2020-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/26/Request-Response-Reliability/">Request/Response Reliability</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+<p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
+<p>Let’s set the stage by stating our end goal.</p>
+<blockquote>
+<p>Design and build performant, maintainable and resilient software systems where adding the 200th feature is as fast and easy as adding the first.</p>
+</blockquote>
+<p>We will start with reliability. Everyone knows that network is not reliable. However, we continue to write code similar to this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
+<ol>
+<li><p>Need to send some data to a remote service for a long running workflow.</p>
+</li>
+<li><p>Invoke a synchronous call and wait for response.</p>
+</li>
+<li><p>Get a timeout exception</p>
+<p>Here are some possible scenarios</p>
+<ul>
+<li>Data did not arrive at the server </li>
+<li>Data arrived, service did not complete processing before timeout.</li>
+</ul>
+<p>At this point client does not know what to do; this is important data that needs to processed. </p>
+<ul>
+<li>Resend and risk duplicate processing? </li>
+<li>Write service code to handle deduplication? What if we don’t own the service?</li>
+<li>What do we tell the user? I know “An unexpected error occurred” :)</li>
+</ul>
+<p>The bottom line is:</p>
+<blockquote>
+<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br>-Udi Dahan</p>
+</blockquote>
+</li>
+</ol>
+<p>Today I learned: It is very difficult to build reliable systems on top of http with request/response (remote procedure calling-RPC, REST, Web Services etc.)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="cksgxb5fq0005vb0ub7h52ich" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="title-Remote-Work" class="article article-type-title" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/15/Remote-Work/" class="article-date">
+  <time datetime="2019-01-15T06:00:00.000Z" itemprop="datePublished">2019-01-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/15/Remote-Work/">Remote Work Revolution</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Remote work opportunities are on the rise. <a href="https://www.census.gov/library/visualizations/2013/comm/home_based_workers.html" target="_blank" rel="noopener">US Census Bureau</a> documented that more people are working from home.</p>
+<p>The largest programming community website Stackoverflow added a remote checkbox to their jobs page recently.<br><a href=""><img src="/images/stackoverflow.png" alt=""></a></p>
+<p>It is hard to ignore effects on recruiting.<br><a href="https://asunar.github.io/images/revolution_small.png" target="_blank" rel="noopener"><img src="/images/revolution_small.png" alt="" title="Revolution"></a></p>
+<p>While certain companies continue to rule out remote work (Netflix, Yahoo, Slack(!)), many others are embracing it. There are also some companies that are stuck somewhere in the middle. A prime example of this is Microsoft, there are several prominent technologists working remotely for Microsoft. However, there is no obvious way to search for a remote position in Microsoft’s careers site. Does Microsoft allow remote work? It depends…</p>
+<blockquote>
+<p>Will the remote work trend continue or will we see companies telling employees to come back to the office (Yahoo, IBM)?</p>
+</blockquote>
+<p>Due to the high cost of living in major tech hubs such as the Bay Area, Seattle and New York, it is not uncommon to see compensation packages (salary, bonus and equity) for experienced IT workers reaching $400K a year. On the other hand, anectodal evidence suggests that there are plenty of IT workers located elsewhere willing to accept a smaller comp package as long as they can work remotely.</p>
+<p>Let me put on my captain obvious hat for a second…</p>
+<p>Given that</p>
+<ul>
+<li>there is a talent shortage in the tech industry</li>
+<li>and it is projected to continue</li>
+<li>and IT worker comp packages are reaching new highs</li>
+<li>and IT worker comp packages are one of the biggest cost items in most companys’ balance sheets</li>
+</ul>
+<p>Then</p>
+<ul>
+<li>all other things being equal, remote work trend should continue to accelerate simply due to basic laws of supply and demand.</li>
+</ul>
+<p>There are also less obvious signs of remote work revolution like a larger company that does not allow remote work acquiring a startup that actively encourages it. Microsoft’s Github acquisition is a good example. This seems to be happening to companies of all sizes across various industries effectively reversing anti-remote work policy.</p>
+<p>The prediction sounds reasonable:</p>
+<blockquote>
+<p>The future of work is Remote.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="cksgxb5fl0003vb0u33l766xt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Trends-Predictions-for-the-Software-Industry" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/" class="article-date">
+  <time datetime="2019-01-13T14:21:46.000Z" itemprop="datePublished">2019-01-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/">Trends/Predictions for the Software Industry</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>It is that time of the year when most people reflect on the past and make plans/predictions for the future. I have been having some conversations with my colleagues and wanted to put my thoughts on the two main trends dominating the software industry on <em>“paper”</em>.</p>
+<h2 id="Serverless-and-Remote-Work"><a href="#Serverless-and-Remote-Work" class="headerlink" title="Serverless and Remote Work"></a><a href="#Serverless-and-Remote-Work" title="Serverless and Remote Work"></a>Serverless and Remote Work</h2><p>Serverless software applications and architectures will dominate the software landscape in the coming years in my opinion. Serverless coupled with wider adoption of remote work arrangements may have further downstream effects on everything from real estate to social mobility in the developing world.</p>
+<p>If software is eating the world, analyzing the trends that affect software construction may yield interesting insights.</p>
+<h2 id="Serverless"><a href="#Serverless" class="headerlink" title="Serverless"></a><a href="#Serverless" title="Serverless "></a>Serverless</h2><p>Serverless software applications are usually</p>
+<ul>
+<li>Event-driven ( someone clicked on a link/uploaded a file, it is 4am on a Tuesday i.e. code runs in response to an event )</li>
+<li>Stateless ( don’t store any data )</li>
+<li>Billed only for the milliseconds they run</li>
+</ul>
+<p>It is called Serverless because someone else (like Amazon Web Services(AWS) or Microsoft Azure) runs and maintains the servers.</p>
+<p>Why is this important? As an organization who uses/maintains software to run the business, think about the things one does <strong>NOT</strong> need to worry about :</p>
+<ul>
+<li>Operating system updates ( ex. security updates, upgrade to Windows 16 etc. )</li>
+<li>Network attack surface (no continuously running servers that may be prone to attacks)</li>
+<li>Each process gets its own entire compute env (someone accidentally uploading a huge file should not affect any other users)</li>
+<li>Paying for server/database licenses, system/server/network admin salaries<br>(if you happen to work in one of these areas and worry about being phased out read <a href="https://www.susanjfowler.com/blog/2016/10/13/the-ops-identity-crisis" target="_blank" rel="noopener">this</a>)</li>
+</ul>
+<p>In a nutshell, serverless will free businesses to spend more of their time and resources on improving the core business. On second thought, make that <em>smart businesses</em>; there will always be companies that are resistant to change.</p>
+<blockquote>
+<p>The avalanche has begun, it’s too late for the pebbles to vote. - Ambassador Kosh</p>
+</blockquote>
+<p>If an organization can use an authentication service, data storage service, email service etc. that can scale automatically based on the need and pay for only what they use, why would they not do it? This will almost certainly be cheaper than paying software developer salaries to build these services in-house.</p>
+<p>Given that most companies will want to do more with less, what will the already employed software engineers work on? Werner Vogels may have the answer here.</p>
+<blockquote>
+<p>In the future, all the code you ever write will be business logic. - Werner Vogels (Chief Technology Officer of Amazon)</p>
+</blockquote>
+<p><del>Coming soon</del> <a href="../../../2019/01/15/Remote-Work">Remote Work</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="cksgxb5g9000cvb0u8d4n0tb1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Perils-of-IsNull-Function" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/10/Perils-of-IsNull-Function/" class="article-date">
+  <time datetime="2018-12-10T14:13:48.000Z" itemprop="datePublished">2018-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/10/Perils-of-IsNull-Function/">Perils of IsNull Function</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Did you know that SQL Server’s IsNull() function does an implicit conversion?</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ISNULL ( check_expression , replacement_value)</span><br></pre></td></tr></table></figure>
+<p>The documentation explicitly states that</p>
+<p>The value of check_expression is returned if it is not NULL; otherwise, replacement_value is returned after <strong>it is implicitly converted to the type of check_expression, if the types are different. replacement_value can be truncated if replacement_value is longer than check_expression.</strong> (emphasis mine)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>  </span><br><span class="line"> empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line">  </span><br><span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span><br></pre></td></tr></table></figure>
+
+<p>See the problem? Data type of EmpId column on line 2 is varchar(10) and the data type of empIdFilter is varchar(9).</p>
+<p>Therefore, ISNULL will convert varchar(10) to varchar(9) resulting in truncation. Now imagine this in a stored procedure where the EmpId column datatype is not obvious and filter variable is declared somewhere far away from the SQL statement. It becomes a pretty insidious bug.</p>
+<p>In order to avoid this, you can write your SQL statement like this.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>   </span><br><span class="line"> @empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line"><span class="number">1234567890</span>  </span><br><span class="line">  </span><br><span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="cksgxb5fe0001vb0ucukvghiw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/10/Coupling/">Coupling</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/29/Request-Response-Scalability/">Request/Response Scalability</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Alper Sunar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
