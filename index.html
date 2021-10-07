@@ -26,7 +26,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container">
@@ -64,6 +64,209 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Learning-from-failure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/05/Learning-from-failure/" class="article-date">
+  <time datetime="2021-10-05T14:01:43.000Z" itemprop="datePublished">2021-10-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/05/Learning-from-failure/">Learning from failure</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I have failed a coding challenge some time ago. It looked like a simple enough problem. However, afer struggling  to come up with an answer in the allowed time, I blew up the interview.</p>
+<p>As a software professional with about two decades of progressive experience I was disappointed. I decided to do a mini retrospective to see what I can learn from this experience; what went wrong and how I can do better next time. I skimmed through the “Cracking the Coding Interview” book in preparation for the interview. However, I still made the most common interviewing mistake. I jumped into coding too soon without formulating a solution in my head first.</p>
+<p>The task looked pretty simple; write a function that converts an integer to roman numeral. I thought I had a pretty good understanding of the problem and that I would be able to come up with an algorithm on the spot. I was unable to find a pattern to code.</p>
+<p>I remembered the advice to practice solving coding challenges on paper for practice and decided to give it a try. I have had good luck with what I call “table approach” where you put all the relevant variables in a table and track their values for each iteration.</p>
+<p>Started with writing down the rules:</p>
+<ul>
+<li>M: 1000, D: 500, C: 100, L: 50, X: 10, I: 1</li>
+<li>Symbols to the right increment, symbols to the left decrement</li>
+<li>Max 3 consecutive roman numerals are allowed</li>
+<li>Maximum number representable in roman numerals is 3999</li>
+<li>0 has no equivalent</li>
+</ul>
+<p>The last three rules were not immediately obvious before writing them down. It’s easy to see the early exit conditions. If the number is 0 or greater than 3999, there is nothing to do.</p>
+<p>Here is a table that shows the roman numerals to represent numbers 1-9 in different places.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">1000s</th>
+<th align="center">100s</th>
+<th>10s</th>
+<th>1s</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">M</td>
+<td align="center">C</td>
+<td>X</td>
+<td>I</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">MM</td>
+<td align="center">CC</td>
+<td>XX</td>
+<td>II</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">MMM</td>
+<td align="center">CCC</td>
+<td>XXX</td>
+<td>III</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">-</td>
+<td align="center">CD</td>
+<td>XL</td>
+<td>IV</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">-</td>
+<td align="center">D</td>
+<td>L</td>
+<td>V</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">-</td>
+<td align="center">DC</td>
+<td>LX</td>
+<td>VI</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">-</td>
+<td align="center">DCC</td>
+<td>LXX</td>
+<td>VII</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">-</td>
+<td align="center">DCCC</td>
+<td>LXXX</td>
+<td>VIII</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">-</td>
+<td align="center">CM</td>
+<td>XC</td>
+<td>IX</td>
+</tr>
+</tbody></table>
+<p>Here is the pattern I see:</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">a</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">aa</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">aaa</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">ab</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">b</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">ba</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">baa</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">baaa</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">ac</td>
+</tr>
+</tbody></table>
+<p>Let’s represent this pattern in javascript:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">convertDigit</span>(<span class="params">c, p, gp, digitNumber</span>)</span>&#123;</span><br><span class="line">  <span class="comment">// c: current numeral</span></span><br><span class="line">  <span class="comment">// p: parent numeral</span></span><br><span class="line">  <span class="comment">// gp: grandParent numeral</span></span><br><span class="line">  <span class="keyword">let</span> digitNumberRomanNumeralTransform = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">    [<span class="number">1</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c],</span><br><span class="line">    [<span class="number">2</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c],</span><br><span class="line">    [<span class="number">3</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c + c],</span><br><span class="line">    [<span class="number">4</span>, <span class="function">(<span class="params">c, p, _</span>) =&gt;</span> c + p],</span><br><span class="line">    [<span class="number">5</span>, <span class="function">(<span class="params">_, p</span>) =&gt;</span> p],</span><br><span class="line">    [<span class="number">6</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c],</span><br><span class="line">    [<span class="number">7</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c],</span><br><span class="line">    [<span class="number">8</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c + c],</span><br><span class="line">    [<span class="number">9</span>, <span class="function">(<span class="params">c, _, gp</span>) =&gt;</span> c + gp]</span><br><span class="line">  ])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> getTransformFunc = digitNumberRomanNumeralTransform.get(digitNumber)</span><br><span class="line">  <span class="keyword">const</span> result = getTransformFunc(c, p, gp)</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+
+<p>Every digit in an integer can be represented by 3 roman numerals:</p>
+<ul>
+<li>1s: I, V, X </li>
+<li>10s: X, L, C</li>
+<li>100s: C, D, M</li>
+</ul>
+<p>Sounds like a simple Map.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDigitRomanNumeralsMap</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> digitRomanNumeralsMap = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">  [<span class="number">1</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;I&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;V&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;X&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">10</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;X&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;L&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;C&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">100</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;C&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;D&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;M&quot;</span> &#125;],</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> digitRomanNumeralsMap</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now I can:</p>
+<ul>
+<li>Iterate over each digit</li>
+<li>Pick the 3 roman numerals for the digit place</li>
+<li>Convert each digit to roman numeral</li>
+<li>Concatenate roman numerals</li>
+</ul>
+<p>See the code in action <a target="_blank" rel="noopener" href="https://replit.com/@asunar/Roman-Numerals">here</a>.</p>
+<p>Retro time… What have I learned from this experience?</p>
+<ul>
+<li>Read the entire question, ask for clarification and make assumptions explicit </li>
+<li>Read the entire question, ask for clarification and make assumptions explicit (not a typo) </li>
+<li>Do not skip the steps above regardless of how easy the question might seem</li>
+<li>Avoid multitasking, formulate a solution <em>and then</em> write the code</li>
+<li>Draw a table to visualize the available data</li>
+<li>Try to detect a pattern</li>
+<li>Optionally write some pseudocode to mentally test the pattern</li>
+<li>Write code to implement the pattern/algorithm</li>
+</ul>
+<p>You’re welcome, future self.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/10/05/Learning-from-failure/" data-id="ckugs89rr0001tt0ugamudc5l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interview/" rel="tag">interview</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Coupling" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/07/10/Coupling/" class="article-date">
@@ -86,7 +289,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
 <p>Coupling is one of the fundamental concepts that affects the maintainability of software systems as discussed <a href="../../../2020/07/09/Request-Response-to-Service-Boundaries/">before</a>.  Coupling measures how dependent are the components of the system on one another. </p>
 <ul>
 <li>Incoming coupling: who depends on you (aka afferent coupling)</li>
@@ -135,7 +338,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/10/Coupling/" data-id="cksgxb5ez0000vb0u8nkhfwvh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/10/Coupling/" data-id="ckugs89rj0000tt0u6bv5b2g8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -169,11 +372,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
 <p>In this post, we will conclude our request/response analysis. We know that request/response may be <a href="../../../2020/06/26/Request-Response-Reliability/">unreliable</a>, <a href="../../../2020/07/02/Request-Response-Performance/">slow</a> and not <a href="../../../2020/06/29/Request-Response-Scalability/">scalable</a>. </p>
 <p>However, it is not possible to completely avoid using request/response and still build a useful software system. Is there an alternative? </p>
 <p>There is good news and bad news. The good news is that we can create reliable, scalable and performant software systems by strictly adhering to the proven principles that have been around for a long time such as loose coupling (more on this later) and encapsulation.</p>
-<p>The bad news is that it is challenging to adhere to the principles in the face of marketing from tech vendors and cargo cult programming (Netflix, Uber are building microservices so should we… <a href="http://highscalability.com/blog/2020/4/8/one-team-at-uber-is-moving-from-microservices-to-macroservic.html" target="_blank" rel="noopener">not so fast</a>).</p>
+<p>The bad news is that it is challenging to adhere to the principles in the face of marketing from tech vendors and cargo cult programming (Netflix, Uber are building microservices so should we… <a target="_blank" rel="noopener" href="http://highscalability.com/blog/2020/4/8/one-team-at-uber-is-moving-from-microservices-to-macroservic.html">not so fast</a>).</p>
 <blockquote style="text-align:left; line-height:1.5">
 All you need to know about software:<br />Tightly coupled designs donot work.<br />Highly cohesive, encapsulated software loosely coupled from other<br />highly cohesive, encapsulated software work. <br /> 
 -Udi Dahan (paraphrased)
@@ -188,7 +391,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <li>Address</li>
 </ul>
 <p>If a customer’s name does not change when they move, name and address donot need to be stored together.</p>
-<p>This understanding leads us to one of the most important aspects of the distributed systems design: <a href="https://particular.net/webinars/finding-your-service-boundaries-a-practical-guide" target="_blank" rel="noopener">Finding your service boundaries</a>. </p>
+<p>This understanding leads us to one of the most important aspects of the distributed systems design: <a target="_blank" rel="noopener" href="https://particular.net/webinars/finding-your-service-boundaries-a-practical-guide">Finding your service boundaries</a>. </p>
 <p>In a nutshell,</p>
 <ul>
 <li>Design and understand user workflows</li>
@@ -208,7 +411,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="cksgxb5g5000avb0u2dg47rqi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="ckugs89s7000dtt0u8xumc6te" class="article-share-link">Share</a>
       
       
     </footer>
@@ -240,13 +443,13 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
 <p>We will focus on performance aspects of request/response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
 <blockquote>
 <p>Latency: Time to cross the network in one direction.</p>
 </blockquote>
 <p>Remember that latency does not include any processing time (serialization/deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
-<p><a href=""><img src="/images/scaled_latency.png" alt=""></a></p>
+<p><a href=""><img src="/images/scaled_latency.png"></a></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> importantService = <span class="keyword">new</span> ImportantService();</span><br><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
 
 <p>Assuming that we’re making a remote call across the US, we can conclude that -relatively speaking- if the first line takes 1 second, the second line will take 4 years. Let that sink in for a moment.</p>
@@ -259,7 +462,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="cksgxb5fo0004vb0u03q4fgv9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/02/Request-Response-Performance/" data-id="ckugs89rz0005tt0u1w4v8mpx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -293,7 +496,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
 <p>It’s time to analyze the scalability characteristics of synchronous request/response operations as in the case of making REST/gRPC/Web Services to call one or more (micro)services, databases.</p>
 <p>Typical scenario where the server is running a language with a Garbage Collector to free up memory (Java, .NET languages)</p>
 <ul>
@@ -316,13 +519,13 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <blockquote>
 <p>No, it doesn’t. That just means the thread gets out of the way so you can take on another request. That actually means you’re gonna fill up faster and use more memory quicker and maybe fail quicker. It is not a solution.<br>-David Boike</p>
 </blockquote>
-<p>Thanks to <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">ADSD</a> course and to <a href="https://www.youtube.com/watch?v=aE-p0cfwTVU" target="_blank" rel="noopener">David’s Boike’s presentation</a>, I now understand how under sufficient load, long running queries can exhaust all the memory on a web server. </p>
+<p>Thanks to <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">ADSD</a> course and to <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=aE-p0cfwTVU">David’s Boike’s presentation</a>, I now understand how under sufficient load, long running queries can exhaust all the memory on a web server. </p>
 <p>Today I learned: In addition to being <a href="../../../../2020/06/26/Request-Response-Reliability/">unreliable</a> request/response style interaction does not scale well under load. </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="cksgxb5fx0008vb0u79km9xm6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/29/Request-Response-Scalability/" data-id="ckugs89s3000att0ugmb85eai" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -356,7 +559,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
 <p>In the previous <a href="../../../../2020/06/26/Request-Response-Reliability">post</a>, we demonstrated the unreliability of request/response.</p>
 <p>If such a trivial example can show how unreliable request/response <em>could</em> be, why do we continue to write similar type of code?</p>
 <p>The problem is request/response code may work in production without any issues for a long time. However, if and when the conditions are right we may receive a bug report about lost data and/or duplicate processing etc. </p>
@@ -369,13 +572,13 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <blockquote>
 <p>Cannot reproduce.</p>
 </blockquote>
-<p>Congratulations on joining the <a href="https://blog.codinghorror.com/the-works-on-my-machine-certification-program/" target="_blank" rel="noopener">Works on my machine</a> club.</p>
+<p>Congratulations on joining the <a target="_blank" rel="noopener" href="https://blog.codinghorror.com/the-works-on-my-machine-certification-program/">Works on my machine</a> club.</p>
 <p><a href=""><img src="/images/works_on_my_machine.png" alt="Works on my machine"></a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="cksgxb5ge000evb0uh5ma2y5s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/28/Works-on-my-machine/" data-id="ckugs89sd000htt0u18xq1aj4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -409,7 +612,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a href="https://learn.particular.net/courses/adsd-online" target="_blank" rel="noopener">Advanced Distributed Systems Design</a> course.</p>
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
 <p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
 <p>Let’s set the stage by stating our end goal.</p>
 <blockquote>
@@ -420,34 +623,31 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 
 <p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
 <ol>
-<li><p>Need to send some data to a remote service for a long running workflow.</p>
-</li>
-<li><p>Invoke a synchronous call and wait for response.</p>
-</li>
-<li><p>Get a timeout exception</p>
-<p>Here are some possible scenarios</p>
+<li>Need to send some data to a remote service for a long running workflow.</li>
+<li>Invoke a synchronous call and wait for response.</li>
+<li>Get a timeout exception</li>
+</ol>
+<p> Here are some possible scenarios</p>
 <ul>
 <li>Data did not arrive at the server </li>
 <li>Data arrived, service did not complete processing before timeout.</li>
 </ul>
-<p>At this point client does not know what to do; this is important data that needs to processed. </p>
+<p> At this point client does not know what to do; this is important data that needs to processed. </p>
 <ul>
 <li>Resend and risk duplicate processing? </li>
 <li>Write service code to handle deduplication? What if we don’t own the service?</li>
 <li>What do we tell the user? I know “An unexpected error occurred” :)</li>
 </ul>
-<p>The bottom line is:</p>
+<p> The bottom line is:</p>
 <blockquote>
-<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br>-Udi Dahan</p>
+<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br> -Udi Dahan</p>
 </blockquote>
-</li>
-</ol>
 <p>Today I learned: It is very difficult to build reliable systems on top of http with request/response (remote procedure calling-RPC, REST, Web Services etc.)</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="cksgxb5fq0005vb0ub7h52ich" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/26/Request-Response-Reliability/" data-id="ckugs89s10008tt0udb9adipp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -481,9 +681,9 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Remote work opportunities are on the rise. <a href="https://www.census.gov/library/visualizations/2013/comm/home_based_workers.html" target="_blank" rel="noopener">US Census Bureau</a> documented that more people are working from home.</p>
-<p>The largest programming community website Stackoverflow added a remote checkbox to their jobs page recently.<br><a href=""><img src="/images/stackoverflow.png" alt=""></a></p>
-<p>It is hard to ignore effects on recruiting.<br><a href="https://asunar.github.io/images/revolution_small.png" target="_blank" rel="noopener"><img src="/images/revolution_small.png" alt="" title="Revolution"></a></p>
+        <p>Remote work opportunities are on the rise. <a target="_blank" rel="noopener" href="https://www.census.gov/library/visualizations/2013/comm/home_based_workers.html">US Census Bureau</a> documented that more people are working from home.</p>
+<p>The largest programming community website Stackoverflow added a remote checkbox to their jobs page recently.<br><a href=""><img src="/images/stackoverflow.png"></a></p>
+<p>It is hard to ignore effects on recruiting.<br><a target="_blank" rel="noopener" href="https://asunar.github.io/images/revolution_small.png"><img src="/images/revolution_small.png" title="Revolution"></a></p>
 <p>While certain companies continue to rule out remote work (Netflix, Yahoo, Slack(!)), many others are embracing it. There are also some companies that are stuck somewhere in the middle. A prime example of this is Microsoft, there are several prominent technologists working remotely for Microsoft. However, there is no obvious way to search for a remote position in Microsoft’s careers site. Does Microsoft allow remote work? It depends…</p>
 <blockquote>
 <p>Will the remote work trend continue or will we see companies telling employees to come back to the office (Yahoo, IBM)?</p>
@@ -492,14 +692,14 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <p>Let me put on my captain obvious hat for a second…</p>
 <p>Given that</p>
 <ul>
-<li>there is a talent shortage in the tech industry</li>
-<li>and it is projected to continue</li>
-<li>and IT worker comp packages are reaching new highs</li>
-<li>and IT worker comp packages are one of the biggest cost items in most companys’ balance sheets</li>
+<li>  there is a talent shortage in the tech industry</li>
+<li>  and it is projected to continue</li>
+<li>  and IT worker comp packages are reaching new highs</li>
+<li>  and IT worker comp packages are one of the biggest cost items in most companys’ balance sheets</li>
 </ul>
 <p>Then</p>
 <ul>
-<li>all other things being equal, remote work trend should continue to accelerate simply due to basic laws of supply and demand.</li>
+<li>  all other things being equal, remote work trend should continue to accelerate simply due to basic laws of supply and demand.</li>
 </ul>
 <p>There are also less obvious signs of remote work revolution like a larger company that does not allow remote work acquiring a startup that actively encourages it. Microsoft’s Github acquisition is a good example. This seems to be happening to companies of all sizes across various industries effectively reversing anti-remote work policy.</p>
 <p>The prediction sounds reasonable:</p>
@@ -510,7 +710,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="cksgxb5fl0003vb0u33l766xt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/15/Remote-Work/" data-id="ckugs89ry0004tt0u4j21aofr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
@@ -549,17 +749,17 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <p>If software is eating the world, analyzing the trends that affect software construction may yield interesting insights.</p>
 <h2 id="Serverless"><a href="#Serverless" class="headerlink" title="Serverless"></a><a href="#Serverless" title="Serverless "></a>Serverless</h2><p>Serverless software applications are usually</p>
 <ul>
-<li>Event-driven ( someone clicked on a link/uploaded a file, it is 4am on a Tuesday i.e. code runs in response to an event )</li>
-<li>Stateless ( don’t store any data )</li>
-<li>Billed only for the milliseconds they run</li>
+<li>  Event-driven ( someone clicked on a link/uploaded a file, it is 4am on a Tuesday i.e. code runs in response to an event )</li>
+<li>  Stateless ( don’t store any data )</li>
+<li>  Billed only for the milliseconds they run</li>
 </ul>
 <p>It is called Serverless because someone else (like Amazon Web Services(AWS) or Microsoft Azure) runs and maintains the servers.</p>
 <p>Why is this important? As an organization who uses/maintains software to run the business, think about the things one does <strong>NOT</strong> need to worry about :</p>
 <ul>
-<li>Operating system updates ( ex. security updates, upgrade to Windows 16 etc. )</li>
-<li>Network attack surface (no continuously running servers that may be prone to attacks)</li>
-<li>Each process gets its own entire compute env (someone accidentally uploading a huge file should not affect any other users)</li>
-<li>Paying for server/database licenses, system/server/network admin salaries<br>(if you happen to work in one of these areas and worry about being phased out read <a href="https://www.susanjfowler.com/blog/2016/10/13/the-ops-identity-crisis" target="_blank" rel="noopener">this</a>)</li>
+<li>  Operating system updates ( ex. security updates, upgrade to Windows 16 etc. )</li>
+<li>  Network attack surface (no continuously running servers that may be prone to attacks)</li>
+<li>  Each process gets its own entire compute env (someone accidentally uploading a huge file should not affect any other users)</li>
+<li>Paying for server/database licenses, system/server/network admin salaries<br>  (if you happen to work in one of these areas and worry about being phased out read <a target="_blank" rel="noopener" href="https://www.susanjfowler.com/blog/2016/10/13/the-ops-identity-crisis">this</a>)</li>
 </ul>
 <p>In a nutshell, serverless will free businesses to spend more of their time and resources on improving the core business. On second thought, make that <em>smart businesses</em>; there will always be companies that are resistant to change.</p>
 <blockquote>
@@ -575,7 +775,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="cksgxb5g9000cvb0u8d4n0tb1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckugs89s9000ftt0u16rycywn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -611,16 +811,16 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ISNULL ( check_expression , replacement_value)</span><br></pre></td></tr></table></figure>
 <p>The documentation explicitly states that</p>
 <p>The value of check_expression is returned if it is not NULL; otherwise, replacement_value is returned after <strong>it is implicitly converted to the type of check_expression, if the types are different. replacement_value can be truncated if replacement_value is longer than check_expression.</strong> (emphasis mine)</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>  </span><br><span class="line"> empId = <span class="keyword">ISNULL</span>(@empIdFilter,empid)  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line">  </span><br><span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@TestIsNull</span> <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="type">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="variable">@TestIsNull</span>  </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;1234567890&#x27;</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@empIdFilter</span> <span class="type">varchar</span>(<span class="number">9</span>) <span class="operator">=</span> <span class="keyword">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> <span class="variable">@TestIsNull</span>   </span><br><span class="line"><span class="keyword">where</span>  </span><br><span class="line"> empId <span class="operator">=</span> ISNULL(<span class="variable">@empIdFilter</span>,empid)  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line">  </span><br><span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>See the problem? Data type of EmpId column on line 2 is varchar(10) and the data type of empIdFilter is varchar(9).</p>
 <p>Therefore, ISNULL will convert varchar(10) to varchar(9) resulting in truncation. Now imagine this in a stored procedure where the EmpId column datatype is not obvious and filter variable is declared somewhere far away from the SQL statement. It becomes a pretty insidious bug.</p>
 <p>In order to avoid this, you can write your SQL statement like this.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @TestIsNull <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="built_in">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> @TestIsNull  </span><br><span class="line"><span class="keyword">select</span> <span class="string">'1234567890'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> @empIdFilter <span class="built_in">varchar</span>(<span class="number">9</span>) = <span class="literal">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> *  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> @TestIsNull   </span><br><span class="line"><span class="keyword">where</span>   </span><br><span class="line"> @empIdFilter <span class="keyword">is</span> <span class="literal">null</span> <span class="keyword">or</span> empid = @empIdFilter  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line"><span class="number">1234567890</span>  </span><br><span class="line">  </span><br><span class="line">(<span class="number">1</span> <span class="keyword">row</span> affected)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@TestIsNull</span> <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="type">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="variable">@TestIsNull</span>  </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;1234567890&#x27;</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@empIdFilter</span> <span class="type">varchar</span>(<span class="number">9</span>) <span class="operator">=</span> <span class="keyword">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> <span class="variable">@TestIsNull</span>   </span><br><span class="line"><span class="keyword">where</span>   </span><br><span class="line"> <span class="variable">@empIdFilter</span> <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> empid <span class="operator">=</span> <span class="variable">@empIdFilter</span>  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line"><span class="number">1234567890</span>  </span><br><span class="line">  </span><br><span class="line">(<span class="number">1</span> <span class="type">row</span> affected)  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="cksgxb5fe0001vb0ucukvghiw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/10/Perils-of-IsNull-Function/" data-id="ckugs89rw0003tt0u8x178wib" class="article-share-link">Share</a>
       
       
     </footer>
@@ -643,7 +843,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
     </div>
   </div>
 
@@ -653,7 +853,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
     </div>
   </div>
 
@@ -662,7 +862,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -673,6 +873,10 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/10/05/Learning-from-failure/">Learning from failure</a>
+          </li>
         
           <li>
             <a href="/2020/07/10/Coupling/">Coupling</a>
@@ -688,10 +892,6 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
         
           <li>
             <a href="/2020/06/29/Request-Response-Scalability/">Request/Response Scalability</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/28/Works-on-my-machine/">Works on my machine</a>
           </li>
         
       </ul>
