@@ -230,7 +230,7 @@
 <td align="center">ac</td>
 </tr>
 </tbody></table>
-<p>Let’s represent this pattern in javascript:</p>
+<p>Let’s code this pattern in javascript:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">convertDigit</span>(<span class="params">c, p, gp, digitNumber</span>)</span>&#123;</span><br><span class="line">  <span class="comment">// c: current numeral</span></span><br><span class="line">  <span class="comment">// p: parent numeral</span></span><br><span class="line">  <span class="comment">// gp: grandParent numeral</span></span><br><span class="line">  <span class="keyword">let</span> digitNumberRomanNumeralTransform = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">    [<span class="number">1</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c],</span><br><span class="line">    [<span class="number">2</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c],</span><br><span class="line">    [<span class="number">3</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c + c],</span><br><span class="line">    [<span class="number">4</span>, <span class="function">(<span class="params">c, p, _</span>) =&gt;</span> c + p],</span><br><span class="line">    [<span class="number">5</span>, <span class="function">(<span class="params">_, p</span>) =&gt;</span> p],</span><br><span class="line">    [<span class="number">6</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c],</span><br><span class="line">    [<span class="number">7</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c],</span><br><span class="line">    [<span class="number">8</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c + c],</span><br><span class="line">    [<span class="number">9</span>, <span class="function">(<span class="params">c, _, gp</span>) =&gt;</span> c + gp]</span><br><span class="line">  ])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> getTransformFunc = digitNumberRomanNumeralTransform.get(digitNumber)</span><br><span class="line">  <span class="keyword">const</span> result = getTransformFunc(c, p, gp)</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
 
 <p>Every digit in an integer can be represented by 3 roman numerals:</p>
@@ -266,7 +266,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2021/10/05/Learning-from-failure/" data-id="ckusohhd500011i0u6mk564cw" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2021/10/05/Learning-from-failure/" data-id="ckusos32h0001i10ue5hy1nmb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interview/" rel="tag">interview</a></li></ul>
@@ -349,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/10/Coupling/" data-id="ckusohhcs00001i0ufb7bapsp" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/10/Coupling/" data-id="ckusos3280000i10ucwm50m6e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -422,7 +422,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="ckusohhdo000d1i0u1sk29z31" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="ckusos333000fi10u26xn0nre" class="article-share-link">Share</a>
       
       
     </footer>
@@ -473,7 +473,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/02/Request-Response-Performance/" data-id="ckusohhdf00051i0uc0v863dh" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/02/Request-Response-Performance/" data-id="ckusos32r0005i10u2hr02d3c" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -536,7 +536,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/29/Request-Response-Scalability/" data-id="ckusohhdl000a1i0uabqg8dxh" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/06/29/Request-Response-Scalability/" data-id="ckusos332000ei10u1jlf770b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -589,7 +589,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/28/Works-on-my-machine/" data-id="ckusohhdv000h1i0u3thw0f7r" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/06/28/Works-on-my-machine/" data-id="ckusos33f000ii10u0e1jdr5t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -658,7 +658,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/26/Request-Response-Reliability/" data-id="ckusohhdj00081i0uct5pg5dw" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/06/26/Request-Response-Reliability/" data-id="ckusos32t0008i10u6svf1hxu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -721,7 +721,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2019/01/15/Remote-Work/" data-id="ckusohhdc00041i0ucecc3277" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2019/01/15/Remote-Work/" data-id="ckusos32p0004i10u6hs410sw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
@@ -786,7 +786,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckusohhdq000f1i0uc959fi8h" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckusos335000hi10u96mj3vpb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -831,7 +831,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2018/12/10/Perils-of-IsNull-Function/" data-id="ckusohhda00031i0u6r6i8ujw" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2018/12/10/Perils-of-IsNull-Function/" data-id="ckusos32o0003i10uaxlzdzyh" class="article-share-link">Share</a>
       
       
     </footer>
