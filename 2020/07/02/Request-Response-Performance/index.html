@@ -18,12 +18,12 @@
   
   <title>Request/Response Performance | Code is Liability</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. We will focus on performance aspects of request&#x2F;response interaction">
+  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. We will focus on performance aspects of request&#x2F;response intera">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Request&#x2F;Response Performance">
 <meta property="og:url" content="https://alper.tech/2020/07/02/Request-Response-Performance/index.html">
 <meta property="og:site_name" content="Code is Liability">
-<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. We will focus on performance aspects of request&#x2F;response interaction">
+<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. We will focus on performance aspects of request&#x2F;response intera">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://alper.tech/images/scaled_latency.png">
 <meta property="article:published_time" content="2020-07-03T01:40:51.000Z">
@@ -44,7 +44,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.0.0"></head>
 
 <body>
   <div id="container">
@@ -103,11 +103,11 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
-<p>We will focus on performance aspects of request/response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
+<p>We will focus on performance aspects of request&#x2F;response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
 <blockquote>
 <p>Latency: Time to cross the network in one direction.</p>
 </blockquote>
-<p>Remember that latency does not include any processing time (serialization/deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
+<p>Remember that latency does not include any processing time (serialization&#x2F;deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
 <p><a href=""><img src="/images/scaled_latency.png"></a></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> importantService = <span class="keyword">new</span> ImportantService();</span><br><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
 
@@ -116,12 +116,12 @@
 <p>Bandwidth: the capacity for data transfer of an electronic communications system</p>
 </blockquote>
 <p>Bandwidth is not usually measured. Most developers are not even aware of the bandwidth that is available for their applications in production. Hence the fallacy: Bandwidth is unlimited. Traditionally, the amount of data processed by the software systems grew much faster than bandwidth capacity. The network will obviously affect the performance of your application. </p>
-<h4 id="Example-Gigabit-internet-128mb-sec"><a href="#Example-Gigabit-internet-128mb-sec" class="headerlink" title="Example: Gigabit internet= 128mb/sec"></a>Example: Gigabit internet= 128mb/sec</h4><h4 id="Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost"><a href="#Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost" class="headerlink" title="Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)"></a>Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
+<h4 id="Example-Gigabit-internet-x3D-128mb-x2F-sec"><a href="#Example-Gigabit-internet-x3D-128mb-x2F-sec" class="headerlink" title="Example: Gigabit internet&#x3D; 128mb&#x2F;sec"></a>Example: Gigabit internet&#x3D; 128mb&#x2F;sec</h4><h4 id="Available-bandwidth-x3D-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-x3D-gt-higher-cost"><a href="#Available-bandwidth-x3D-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-x3D-gt-higher-cost" class="headerlink" title="Available bandwidth &#x3D; 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml &#x3D;&gt; higher cost)"></a>Available bandwidth &#x3D; 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml &#x3D;&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/02/Request-Response-Performance/" data-id="ckztyjovz00058qq26g1k0v6e" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/02/Request-Response-Performance/" data-id="cl156grid0005tdq2cqeye24h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>

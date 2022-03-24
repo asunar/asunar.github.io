@@ -37,7 +37,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.0.0"></head>
 
 <body>
   <div id="container">
@@ -98,24 +98,25 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>Has this ever happened to you? </p>
-<p>You have a meeting in 20 minutes and haven’t had lunch yet. There is not enough time so you get some fast-food. You later discover plenty of lunch options at home. You start running scenarios in your head, I could have:</p>
+<p>You’re working from home, have a meeting in 20 minutes and haven’t had lunch yet. There is not enough time so you get some fast food. You later discover plenty of lunch options at home. You start running scenarios in your head, I could have:</p>
 <ul>
 <li>had lunch at home</li>
-<li>saved money / gas / environment (less waste)</li>
+<li>saved money &#x2F; gas &#x2F; environment (less waste)</li>
 <li>(probably) had a healthier meal</li>
 <li>…..</li>
 </ul>
 <p>After experiencing this for the umpteenth time, as I was throwing away fast-food trash I realized there had to be another way.<br>Out of that a new application was born.<br><a href=""><img src="/images/kostanza.jpg"></a></p>
-<p>Pantry Hopper is a food tracker application for the rest of us. It is designed to help answer questions such as “What’s for lunch?”. Pantry Hopper makes it dead simple to</p>
+<p>Pantry Hopper is a meal <del>tracker</del> decision application for the rest of us. It is designed to help answer questions such as “What’s for lunch?”. Pantry Hopper makes it dead simple to</p>
 <ul>
 <li>Bulk add items from your receipt<a href=""><img src="/images/scan.gif"></a></li>
 <li>Organize using tags<a href=""><img src="/images/tags.gif"></a></li>
+<li>Scan receipt, rename and tag items <a href=""><img src="/images/smart_scan.jpg"></a></li>
 </ul>
-<h1 id="Join-the-waitlist-to-be-notified-when-Pantry-Hopper-is-released"><a href="#Join-the-waitlist-to-be-notified-when-Pantry-Hopper-is-released" class="headerlink" title="Join the waitlist to be notified when Pantry Hopper is released."></a><a target="_blank" rel="noopener" href="https://forms.gle/RfKKT6jZy25BwP568">Join the waitlist to be notified when Pantry Hopper is released.</a></h1>
+<h1 id="Check-out-Pantry-Hopper-Beta"><a href="#Check-out-Pantry-Hopper-Beta" class="headerlink" title="Check out Pantry Hopper-Beta"></a>Check out <a target="_blank" rel="noopener" href="https://staging.pantryhopper.com/">Pantry Hopper-Beta</a></h1>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2022/02/19/waitlist/" data-id="ckztyjowe000j8qq2hl2xce5m" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2022/02/19/waitlist/" data-id="cl156griw000jtdq28fxmbl6k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pantryhopper/" rel="tag">pantryhopper</a></li></ul>
@@ -283,7 +284,7 @@
 </tr>
 </tbody></table>
 <p>Let’s code this pattern in javascript:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">convertDigit</span>(<span class="params">c, p, gp, digitNumber</span>)</span>&#123;</span><br><span class="line">  <span class="comment">// c: current numeral</span></span><br><span class="line">  <span class="comment">// p: parent numeral</span></span><br><span class="line">  <span class="comment">// gp: grandParent numeral</span></span><br><span class="line">  <span class="keyword">let</span> digitNumberRomanNumeralTransform = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">    [<span class="number">1</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c],</span><br><span class="line">    [<span class="number">2</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c],</span><br><span class="line">    [<span class="number">3</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c + c],</span><br><span class="line">    [<span class="number">4</span>, <span class="function">(<span class="params">c, p, _</span>) =&gt;</span> c + p],</span><br><span class="line">    [<span class="number">5</span>, <span class="function">(<span class="params">_, p</span>) =&gt;</span> p],</span><br><span class="line">    [<span class="number">6</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c],</span><br><span class="line">    [<span class="number">7</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c],</span><br><span class="line">    [<span class="number">8</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c + c],</span><br><span class="line">    [<span class="number">9</span>, <span class="function">(<span class="params">c, _, gp</span>) =&gt;</span> c + gp]</span><br><span class="line">  ])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> getTransformFunc = digitNumberRomanNumeralTransform.get(digitNumber)</span><br><span class="line">  <span class="keyword">const</span> result = getTransformFunc(c, p, gp)</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">convertDigit</span>(<span class="params">c, p, gp, digitNumber</span>)&#123;</span><br><span class="line">  <span class="comment">// c: current numeral</span></span><br><span class="line">  <span class="comment">// p: parent numeral</span></span><br><span class="line">  <span class="comment">// gp: grandParent numeral</span></span><br><span class="line">  <span class="keyword">let</span> digitNumberRomanNumeralTransform = <span class="keyword">new</span> <span class="title class_">Map</span>([</span><br><span class="line">    [<span class="number">1</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c],</span><br><span class="line">    [<span class="number">2</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c],</span><br><span class="line">    [<span class="number">3</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c + c],</span><br><span class="line">    [<span class="number">4</span>, <span class="function">(<span class="params">c, p, _</span>) =&gt;</span> c + p],</span><br><span class="line">    [<span class="number">5</span>, <span class="function">(<span class="params">_, p</span>) =&gt;</span> p],</span><br><span class="line">    [<span class="number">6</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c],</span><br><span class="line">    [<span class="number">7</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c],</span><br><span class="line">    [<span class="number">8</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c + c],</span><br><span class="line">    [<span class="number">9</span>, <span class="function">(<span class="params">c, _, gp</span>) =&gt;</span> c + gp]</span><br><span class="line">  ])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> getTransformFunc = digitNumberRomanNumeralTransform.<span class="title function_">get</span>(digitNumber)</span><br><span class="line">  <span class="keyword">const</span> result = <span class="title function_">getTransformFunc</span>(c, p, gp)</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
 
 <p>Every digit in an integer can be represented by 3 roman numerals:</p>
 <ul>
@@ -292,7 +293,7 @@
 <li>100s: C, D, M</li>
 </ul>
 <p>Sounds like a simple Map.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDigitRomanNumeralsMap</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> digitRomanNumeralsMap = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">  [<span class="number">1</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;I&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;V&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;X&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">10</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;X&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;L&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;C&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">100</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;C&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;D&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;M&quot;</span> &#125;],</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> digitRomanNumeralsMap</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getDigitRomanNumeralsMap</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">let</span> digitRomanNumeralsMap = <span class="keyword">new</span> <span class="title class_">Map</span>([</span><br><span class="line">  [<span class="number">1</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;I&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;V&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;X&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">10</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;X&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;L&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;C&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">100</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;C&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;D&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;M&quot;</span> &#125;],</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> digitRomanNumeralsMap</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Now I can:</p>
 <ul>
@@ -311,14 +312,14 @@
 <li>Draw a table to visualize the available data</li>
 <li>Try to detect a pattern</li>
 <li>Optionally write some pseudocode to mentally test the pattern</li>
-<li>Write code to implement the pattern/algorithm</li>
+<li>Write code to implement the pattern&#x2F;algorithm</li>
 </ul>
 <p>You’re welcome, future self.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2021/10/05/Learning-from-failure/" data-id="ckztyjovp00018qq2c1ez1ts2" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2021/10/05/Learning-from-failure/" data-id="cl156gri10001tdq2f14b555i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interview/" rel="tag">interview</a></li></ul>
@@ -356,7 +357,7 @@
 <p>Coupling is one of the fundamental concepts that affects the maintainability of software systems as discussed <a href="../../../2020/07/09/Request-Response-to-Service-Boundaries/">before</a>.  Coupling measures how dependent are the components of the system on one another. </p>
 <ul>
 <li>Incoming coupling: who depends on you (aka afferent coupling)</li>
-<li>Outcoming coupling: who you depend on (aka efferent coupling) </li>
+<li>Outcoming coupling: who you depend on (aka efferent coupling)</li>
 </ul>
 <table>
 <thead>
@@ -401,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/10/Coupling/" data-id="ckztyjove00008qq2gzjh15qv" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/10/Coupling/" data-id="cl156grhq0000tdq2090pez9a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -436,8 +437,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
-<p>In this post, we will conclude our request/response analysis. We know that request/response may be <a href="../../../2020/06/26/Request-Response-Reliability/">unreliable</a>, <a href="../../../2020/07/02/Request-Response-Performance/">slow</a> and not <a href="../../../2020/06/29/Request-Response-Scalability/">scalable</a>. </p>
-<p>However, it is not possible to completely avoid using request/response and still build a useful software system. Is there an alternative? </p>
+<p>In this post, we will conclude our request&#x2F;response analysis. We know that request&#x2F;response may be <a href="../../../2020/06/26/Request-Response-Reliability/">unreliable</a>, <a href="../../../2020/07/02/Request-Response-Performance/">slow</a> and not <a href="../../../2020/06/29/Request-Response-Scalability/">scalable</a>. </p>
+<p>However, it is not possible to completely avoid using request&#x2F;response and still build a useful software system. Is there an alternative? </p>
 <p>There is good news and bad news. The good news is that we can create reliable, scalable and performant software systems by strictly adhering to the proven principles that have been around for a long time such as loose coupling (more on this later) and encapsulation.</p>
 <p>The bad news is that it is challenging to adhere to the principles in the face of marketing from tech vendors and cargo cult programming (Netflix, Uber are building microservices so should we… <a target="_blank" rel="noopener" href="http://highscalability.com/blog/2020/4/8/one-team-at-uber-is-moving-from-microservices-to-macroservic.html">not so fast</a>).</p>
 <blockquote style="text-align:left; line-height:1.5">
@@ -446,7 +447,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 </blockquote>
 
 <p>It is sort of an anticlimactic reveal. You would be hard pressed to find any software developer who have not heard these terms.</p>
-<p>In traditional Object Oriented Design nouns become entities, relationships between the entities lead to entity-relationship diagrams (Customer, Order, CustomerOrder etc.) and that usually leads to architectures requiring quite a bit of request/response to do anything useful.</p>
+<p>In traditional Object Oriented Design nouns become entities, relationships between the entities lead to entity-relationship diagrams (Customer, Order, CustomerOrder etc.) and that usually leads to architectures requiring quite a bit of request&#x2F;response to do anything useful.</p>
 <p>One of the issues with this approach is that we end up putting attributes that do not need to change together in the same place. In a typical Customer among other attributes object, we may see:</p>
 <ul>
 <li>Name</li>
@@ -460,21 +461,21 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <li>Design and understand user workflows</li>
 <li>Determine the pieces of data needed to enable the workflows</li>
 <li>Organize pieces of data into <strong>randomly named</strong> piles</li>
-<li>Identify messages/events needed for coordination between the piles</li>
+<li>Identify messages&#x2F;events needed for coordination between the piles</li>
 <li>Name the piles (like CustomerLoyaltyService, ShippingService etc. )</li>
 </ul>
 <p>When teams follow this exercise they realize that the traditional singular “Customer” entity does not exist anymore. First name and last name is in this pile(service to be named later), shipping address is in that pile and loyalty status info is in that pile over there. Effectively, we have exploded the customer entity and distributed its attributes to many piles(prospective services). Ideally, these piles have an ID, customer attributes they are responsible for <strong>and nothing else</strong> so each can totally perform their respective business capability independently. That is what makes them a service.</p>
 <blockquote>
 <p>Service is the technical authority for a given business capability.<br>-Udi Dahan</p>
 </blockquote>
-<p>Note that I am oversimplifying the process here for the purposes of brevity. The process of identifying how the domain breaks down is reportedly a long, difficult and thankless process. Adam Ralph does a great job explaining the nuances in the webinar linked above. In reality, armed with the principles such as minimal request/response and no data sharing between services (no publishing events like CustomerAddressUpdated) it is a process of trial and error.</p>
+<p>Note that I am oversimplifying the process here for the purposes of brevity. The process of identifying how the domain breaks down is reportedly a long, difficult and thankless process. Adam Ralph does a great job explaining the nuances in the webinar linked above. In reality, armed with the principles such as minimal request&#x2F;response and no data sharing between services (no publishing events like CustomerAddressUpdated) it is a process of trial and error.</p>
 <p>These aspects of the service boundary discovery process make it challenging to provide a nice explanation with examples in a blog post. Even the most experienced software architects describe it similar to bumping around in the dark and trying to get a sense of what the shape of the world around you -maybe for days- until discovering some insight.</p>
 <p>It’s no surprise then why this approach is not popular among agile teams biased towards action who prefer working software over documentation, work in sprints and timebox their “spikes”.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="ckztyjow6000d8qq234s8e5wi" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/09/Request-Response-to-Service-Boundaries/" data-id="cl156grim000dtdq2c09veqjd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -507,11 +508,11 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     <div class="article-entry" itemprop="articleBody">
       
         <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
-<p>We will focus on performance aspects of request/response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
+<p>We will focus on performance aspects of request&#x2F;response interactions. Latency and bandwidth are two important concepts that we need to understand when discussing performance.</p>
 <blockquote>
 <p>Latency: Time to cross the network in one direction.</p>
 </blockquote>
-<p>Remember that latency does not include any processing time (serialization/deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
+<p>Remember that latency does not include any processing time (serialization&#x2F;deserialization of the payload). Furthermore, looking at the scaled latency chart will help us understand relative cost of remote calls.</p>
 <p><a href=""><img src="/images/scaled_latency.png"></a></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> importantService = <span class="keyword">new</span> ImportantService();</span><br><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
 
@@ -520,12 +521,12 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <p>Bandwidth: the capacity for data transfer of an electronic communications system</p>
 </blockquote>
 <p>Bandwidth is not usually measured. Most developers are not even aware of the bandwidth that is available for their applications in production. Hence the fallacy: Bandwidth is unlimited. Traditionally, the amount of data processed by the software systems grew much faster than bandwidth capacity. The network will obviously affect the performance of your application. </p>
-<h4 id="Example-Gigabit-internet-128mb-sec"><a href="#Example-Gigabit-internet-128mb-sec" class="headerlink" title="Example: Gigabit internet= 128mb/sec"></a>Example: Gigabit internet= 128mb/sec</h4><h4 id="Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost"><a href="#Available-bandwidth-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-gt-higher-cost" class="headerlink" title="Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)"></a>Available bandwidth = 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml =&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
+<h4 id="Example-Gigabit-internet-x3D-128mb-x2F-sec"><a href="#Example-Gigabit-internet-x3D-128mb-x2F-sec" class="headerlink" title="Example: Gigabit internet&#x3D; 128mb&#x2F;sec"></a>Example: Gigabit internet&#x3D; 128mb&#x2F;sec</h4><h4 id="Available-bandwidth-x3D-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-x3D-gt-higher-cost"><a href="#Available-bandwidth-x3D-128-60-TCP-cost-serialization-cost-bigger-object-graph-xml-x3D-gt-higher-cost" class="headerlink" title="Available bandwidth &#x3D; 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml &#x3D;&gt; higher cost)"></a>Available bandwidth &#x3D; 128 - 60(TCP cost) - serialization_cost(bigger object graph, xml &#x3D;&gt; higher cost)</h4><p>Today I learned: Making remote calls can be extremely slow compared to to the rest of the application code. We can safely assume that this is going to hold true for some time.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/07/02/Request-Response-Performance/" data-id="ckztyjovz00058qq26g1k0v6e" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/07/02/Request-Response-Performance/" data-id="cl156grid0005tdq2cqeye24h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -560,7 +561,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     <div class="article-entry" itemprop="articleBody">
       
         <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
-<p>It’s time to analyze the scalability characteristics of synchronous request/response operations as in the case of making REST/gRPC/Web Services to call one or more (micro)services, databases.</p>
+<p>It’s time to analyze the scalability characteristics of synchronous request&#x2F;response operations as in the case of making REST&#x2F;gRPC&#x2F;Web Services to call one or more (micro)services, databases.</p>
 <p>Typical scenario where the server is running a language with a Garbage Collector to free up memory (Java, .NET languages)</p>
 <ul>
 <li>Client sends a request to the server</li>
@@ -578,17 +579,17 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <li>Response comes back but GC DOES NOT clear regular memory in Gen2, just the disposables that have gone out of scope.</li>
 <li>GC.Collect will freeze ALL THE THREADS while GC goes and cleans up the memory in Gen2.</li>
 </ul>
-<p>I was one of those people who thought that async/await fixes this problem.</p>
+<p>I was one of those people who thought that async&#x2F;await fixes this problem.</p>
 <blockquote>
 <p>No, it doesn’t. That just means the thread gets out of the way so you can take on another request. That actually means you’re gonna fill up faster and use more memory quicker and maybe fail quicker. It is not a solution.<br>-David Boike</p>
 </blockquote>
 <p>Thanks to <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">ADSD</a> course and to <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=aE-p0cfwTVU">David’s Boike’s presentation</a>, I now understand how under sufficient load, long running queries can exhaust all the memory on a web server. </p>
-<p>Today I learned: In addition to being <a href="../../../../2020/06/26/Request-Response-Reliability/">unreliable</a> request/response style interaction does not scale well under load. </p>
+<p>Today I learned: In addition to being <a href="../../../../2020/06/26/Request-Response-Reliability/">unreliable</a> request&#x2F;response style interaction does not scale well under load. </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/29/Request-Response-Scalability/" data-id="ckztyjow4000a8qq2bk8egclb" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/06/29/Request-Response-Scalability/" data-id="cl156grii000atdq2bni0do8h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -623,9 +624,9 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     <div class="article-entry" itemprop="articleBody">
       
         <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
-<p>In the previous <a href="../../../../2020/06/26/Request-Response-Reliability">post</a>, we demonstrated the unreliability of request/response.</p>
-<p>If such a trivial example can show how unreliable request/response <em>could</em> be, why do we continue to write similar type of code?</p>
-<p>The problem is request/response code may work in production without any issues for a long time. However, if and when the conditions are right we may receive a bug report about lost data and/or duplicate processing etc. </p>
+<p>In the previous <a href="../../../../2020/06/26/Request-Response-Reliability">post</a>, we demonstrated the unreliability of request&#x2F;response.</p>
+<p>If such a trivial example can show how unreliable request&#x2F;response <em>could</em> be, why do we continue to write similar type of code?</p>
+<p>The problem is request&#x2F;response code may work in production without any issues for a long time. However, if and when the conditions are right we may receive a bug report about lost data and&#x2F;or duplicate processing etc. </p>
 <ul>
 <li>Unit tests pass</li>
 <li>Integration tests pass</li>
@@ -641,7 +642,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/28/Works-on-my-machine/" data-id="ckztyjowc000h8qq2fpwk6i5g" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/06/28/Works-on-my-machine/" data-id="cl156grit000htdq219n522wl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -705,12 +706,12 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <blockquote>
 <p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br> -Udi Dahan</p>
 </blockquote>
-<p>Today I learned: It is very difficult to build reliable systems on top of http with request/response (remote procedure calling-RPC, REST, Web Services etc.)</p>
+<p>Today I learned: It is very difficult to build reliable systems on top of http with request&#x2F;response (remote procedure calling-RPC, REST, Web Services etc.)</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/26/Request-Response-Reliability/" data-id="ckztyjow200088qq2h2w75xep" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2020/06/26/Request-Response-Reliability/" data-id="cl156grig0008tdq24jf151ml" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
@@ -755,14 +756,14 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
 <p>Let me put on my captain obvious hat for a second…</p>
 <p>Given that</p>
 <ul>
-<li>  there is a talent shortage in the tech industry</li>
-<li>  and it is projected to continue</li>
-<li>  and IT worker comp packages are reaching new highs</li>
-<li>  and IT worker comp packages are one of the biggest cost items in most companys’ balance sheets</li>
+<li>there is a talent shortage in the tech industry</li>
+<li>and it is projected to continue</li>
+<li>and IT worker comp packages are reaching new highs</li>
+<li>and IT worker comp packages are one of the biggest cost items in most companys’ balance sheets</li>
 </ul>
 <p>Then</p>
 <ul>
-<li>  all other things being equal, remote work trend should continue to accelerate simply due to basic laws of supply and demand.</li>
+<li>all other things being equal, remote work trend should continue to accelerate simply due to basic laws of supply and demand.</li>
 </ul>
 <p>There are also less obvious signs of remote work revolution like a larger company that does not allow remote work acquiring a startup that actively encourages it. Microsoft’s Github acquisition is a good example. This seems to be happening to companies of all sizes across various industries effectively reversing anti-remote work policy.</p>
 <p>The prediction sounds reasonable:</p>
@@ -773,7 +774,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2019/01/15/Remote-Work/" data-id="ckztyjovx00048qq24a8cfl4v" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2019/01/15/Remote-Work/" data-id="cl156grib0004tdq26po10tq9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
@@ -807,22 +808,22 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>It is that time of the year when most people reflect on the past and make plans/predictions for the future. I have been having some conversations with my colleagues and wanted to put my thoughts on the two main trends dominating the software industry on <em>“paper”</em>.</p>
+        <p>It is that time of the year when most people reflect on the past and make plans&#x2F;predictions for the future. I have been having some conversations with my colleagues and wanted to put my thoughts on the two main trends dominating the software industry on <em>“paper”</em>.</p>
 <h2 id="Serverless-and-Remote-Work"><a href="#Serverless-and-Remote-Work" class="headerlink" title="Serverless and Remote Work"></a><a href="#Serverless-and-Remote-Work" title="Serverless and Remote Work"></a>Serverless and Remote Work</h2><p>Serverless software applications and architectures will dominate the software landscape in the coming years in my opinion. Serverless coupled with wider adoption of remote work arrangements may have further downstream effects on everything from real estate to social mobility in the developing world.</p>
 <p>If software is eating the world, analyzing the trends that affect software construction may yield interesting insights.</p>
 <h2 id="Serverless"><a href="#Serverless" class="headerlink" title="Serverless"></a><a href="#Serverless" title="Serverless "></a>Serverless</h2><p>Serverless software applications are usually</p>
 <ul>
-<li>  Event-driven ( someone clicked on a link/uploaded a file, it is 4am on a Tuesday i.e. code runs in response to an event )</li>
-<li>  Stateless ( don’t store any data )</li>
-<li>  Billed only for the milliseconds they run</li>
+<li>Event-driven ( someone clicked on a link&#x2F;uploaded a file, it is 4am on a Tuesday i.e. code runs in response to an event )</li>
+<li>Stateless ( don’t store any data )</li>
+<li>Billed only for the milliseconds they run</li>
 </ul>
 <p>It is called Serverless because someone else (like Amazon Web Services(AWS) or Microsoft Azure) runs and maintains the servers.</p>
-<p>Why is this important? As an organization who uses/maintains software to run the business, think about the things one does <strong>NOT</strong> need to worry about :</p>
+<p>Why is this important? As an organization who uses&#x2F;maintains software to run the business, think about the things one does <strong>NOT</strong> need to worry about :</p>
 <ul>
-<li>  Operating system updates ( ex. security updates, upgrade to Windows 16 etc. )</li>
-<li>  Network attack surface (no continuously running servers that may be prone to attacks)</li>
-<li>  Each process gets its own entire compute env (someone accidentally uploading a huge file should not affect any other users)</li>
-<li>Paying for server/database licenses, system/server/network admin salaries<br>  (if you happen to work in one of these areas and worry about being phased out read <a target="_blank" rel="noopener" href="https://www.susanjfowler.com/blog/2016/10/13/the-ops-identity-crisis">this</a>)</li>
+<li>Operating system updates ( ex. security updates, upgrade to Windows 16 etc. )</li>
+<li>Network attack surface (no continuously running servers that may be prone to attacks)</li>
+<li>Each process gets its own entire compute env (someone accidentally uploading a huge file should not affect any other users)</li>
+<li>Paying for server&#x2F;database licenses, system&#x2F;server&#x2F;network admin salaries<br>(if you happen to work in one of these areas and worry about being phased out read <a target="_blank" rel="noopener" href="https://www.susanjfowler.com/blog/2016/10/13/the-ops-identity-crisis">this</a>)</li>
 </ul>
 <p>In a nutshell, serverless will free businesses to spend more of their time and resources on improving the core business. On second thought, make that <em>smart businesses</em>; there will always be companies that are resistant to change.</p>
 <blockquote>
@@ -838,7 +839,7 @@ All you need to know about software:<br />Tightly coupled designs donot work.<br
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alper.tech/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="ckztyjow8000f8qq29trr6hbe" class="article-share-link">Share</a>
+      <a data-url="https://alper.tech/2019/01/13/Trends-Predictions-for-the-Software-Industry/" data-id="cl156grio000ftdq2fqsu8kr9" class="article-share-link">Share</a>
       
       
     </footer>
