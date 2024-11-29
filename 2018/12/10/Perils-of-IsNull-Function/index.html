@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BL152KSG7H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BL152KSG7H');
+</script>
+
+  <link rel="canonical" href="https://alper.tech/2018/12/10/perils-of-isnull-function/"/>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Perils of IsNull Function | Code is Liability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion? 1ISNULL ( check_expression , replacement_value) The documentation explicitly states that The value of check_expression is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Perils of IsNull Function">
+<meta property="og:url" content="https://alper.tech/2018/12/10/Perils-of-IsNull-Function/index.html">
+<meta property="og:site_name" content="Code is Liability">
+<meta property="og:description" content="Did you know that SQL Server’s IsNull() function does an implicit conversion? 1ISNULL ( check_expression , replacement_value) The documentation explicitly states that The value of check_expression is">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-12-10T15:13:48.000Z">
+<meta property="article:modified_time" content="2024-11-29T03:59:17.983Z">
+<meta property="article:author" content="Alper Sunar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Code is Liability</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://alper.tech"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Perils-of-IsNull-Function" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/10/Perils-of-IsNull-Function/" class="article-date">
+  <time datetime="2018-12-10T15:13:48.000Z" itemprop="datePublished">2018-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Perils of IsNull Function
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Did you know that SQL Server’s IsNull() function does an implicit conversion?</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ISNULL ( check_expression , replacement_value)</span><br></pre></td></tr></table></figure>
+<p>The documentation explicitly states that</p>
+<p>The value of check_expression is returned if it is not NULL; otherwise, replacement_value is returned after <strong>it is implicitly converted to the type of check_expression, if the types are different. replacement_value can be truncated if replacement_value is longer than check_expression.</strong> (emphasis mine)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@TestIsNull</span> <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="type">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="variable">@TestIsNull</span>  </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;1234567890&#x27;</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@empIdFilter</span> <span class="type">varchar</span>(<span class="number">9</span>) <span class="operator">=</span> <span class="keyword">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> <span class="variable">@TestIsNull</span>   </span><br><span class="line"><span class="keyword">where</span>  </span><br><span class="line"> empId <span class="operator">=</span> ISNULL(<span class="variable">@empIdFilter</span>,empid)  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line">  </span><br><span class="line">(<span class="number">0</span> <span class="keyword">rows</span> affected)  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>See the problem? Data type of EmpId column on line 2 is varchar(10) and the data type of empIdFilter is varchar(9).</p>
+<p>Therefore, ISNULL will convert varchar(10) to varchar(9) resulting in truncation. Now imagine this in a stored procedure where the EmpId column datatype is not obvious and filter variable is declared somewhere far away from the SQL statement. It becomes a pretty insidious bug.</p>
+<p>In order to avoid this, you can write your SQL statement like this.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@TestIsNull</span> <span class="keyword">table</span> (  </span><br><span class="line"> EmpID <span class="type">varchar</span>(<span class="number">10</span>)  </span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="variable">@TestIsNull</span>  </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;1234567890&#x27;</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@empIdFilter</span> <span class="type">varchar</span>(<span class="number">9</span>) <span class="operator">=</span> <span class="keyword">null</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>  </span><br><span class="line"><span class="keyword">from</span>   </span><br><span class="line"> <span class="variable">@TestIsNull</span>   </span><br><span class="line"><span class="keyword">where</span>   </span><br><span class="line"> <span class="variable">@empIdFilter</span> <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> empid <span class="operator">=</span> <span class="variable">@empIdFilter</span>  </span><br><span class="line">  </span><br><span class="line">EmpID  </span><br><span class="line"><span class="comment">----------  </span></span><br><span class="line"><span class="number">1234567890</span>  </span><br><span class="line">  </span><br><span class="line">(<span class="number">1</span> <span class="type">row</span> affected)  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://alper.tech/2018/12/10/Perils-of-IsNull-Function/" data-id="cm4281xyv0001h8trf0l0dphz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/13/Trends-Predictions-for-the-Software-Industry/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Trends/Predictions for the Software Industry
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pantryhopper/" rel="tag">pantryhopper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/pantryhopper/" style="font-size: 10px;">pantryhopper</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/19/waitlist/">Announcing Pantry Hopper [Deprecated]</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/05/Learning-from-failure/">Learning from failure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/10/Coupling/">Coupling</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Alper Sunar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

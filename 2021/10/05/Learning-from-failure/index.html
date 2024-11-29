@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BL152KSG7H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BL152KSG7H');
+</script>
+
+  <link rel="canonical" href="https://alper.tech/2021/10/05/learning-from-failure/"/>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Learning from failure | Code is Liability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="I have failed a coding challenge some time ago. It looked like a simple enough problem. However, afer struggling  to come up with an answer in the allowed time, I blew it. As a software professional w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learning from failure">
+<meta property="og:url" content="https://alper.tech/2021/10/05/Learning-from-failure/index.html">
+<meta property="og:site_name" content="Code is Liability">
+<meta property="og:description" content="I have failed a coding challenge some time ago. It looked like a simple enough problem. However, afer struggling  to come up with an answer in the allowed time, I blew it. As a software professional w">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-05T15:01:43.000Z">
+<meta property="article:modified_time" content="2024-11-29T03:59:17.982Z">
+<meta property="article:author" content="Alper Sunar">
+<meta property="article:tag" content="interview">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Code is Liability</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://alper.tech"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Learning-from-failure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/05/Learning-from-failure/" class="article-date">
+  <time datetime="2021-10-05T15:01:43.000Z" itemprop="datePublished">2021-10-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Learning from failure
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I have failed a coding challenge some time ago. It looked like a simple enough problem. However, afer struggling  to come up with an answer in the allowed time, I blew it.</p>
+<p>As a software professional with about two decades of progressive experience I was disappointed. I decided to do a mini retrospective to see what I can learn from this experience; what went wrong and how I can do better next time. I skimmed through the “Cracking the Coding Interview” book in preparation for the interview. However, I still made the most common interviewing mistake. I jumped into coding too soon without formulating a solution in my head first.</p>
+<p>The task looked pretty simple; write a function that converts an integer to roman numeral. I thought I had a pretty good understanding of the problem and that I would be able to come up with an algorithm on the spot. I was unable to find a pattern to code.</p>
+<p>I remembered the advice to practice solving coding challenges on paper for practice and decided to give it a try. I have had good luck with what I call “table approach” where you put all the relevant variables in a table and track their values for each iteration.</p>
+<p>Started with writing down the rules:</p>
+<ul>
+<li>M: 1000, D: 500, C: 100, L: 50, X: 10, I: 1</li>
+<li>Symbols to the right increment, symbols to the left decrement</li>
+<li>Max 3 consecutive roman numerals are allowed</li>
+<li>Maximum number representable in roman numerals is 3999</li>
+<li>0 has no equivalent symbol</li>
+</ul>
+<p>The last three rules were not immediately obvious before writing them down. It’s easy to see the early exit conditions. If the number is 0 or greater than 3999, there is nothing to do.</p>
+<p>Here is a table that shows the roman numerals to represent numbers 1-9 in different places.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">1000s</th>
+<th align="center">100s</th>
+<th>10s</th>
+<th>1s</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">M</td>
+<td align="center">C</td>
+<td>X</td>
+<td>I</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">MM</td>
+<td align="center">CC</td>
+<td>XX</td>
+<td>II</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">MMM</td>
+<td align="center">CCC</td>
+<td>XXX</td>
+<td>III</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">-</td>
+<td align="center">CD</td>
+<td>XL</td>
+<td>IV</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">-</td>
+<td align="center">D</td>
+<td>L</td>
+<td>V</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">-</td>
+<td align="center">DC</td>
+<td>LX</td>
+<td>VI</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">-</td>
+<td align="center">DCC</td>
+<td>LXX</td>
+<td>VII</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">-</td>
+<td align="center">DCCC</td>
+<td>LXXX</td>
+<td>VIII</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">-</td>
+<td align="center">CM</td>
+<td>XC</td>
+<td>IX</td>
+</tr>
+</tbody></table>
+<p>Here is the pattern I see:</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">a</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">aa</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">aaa</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">ab</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">b</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">ba</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">baa</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">baaa</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">ac</td>
+</tr>
+</tbody></table>
+<p>Let’s code this pattern in javascript:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">convertDigit</span>(<span class="params">c, p, gp, digitNumber</span>)&#123;</span><br><span class="line">  <span class="comment">// c: current numeral</span></span><br><span class="line">  <span class="comment">// p: parent numeral</span></span><br><span class="line">  <span class="comment">// gp: grandParent numeral</span></span><br><span class="line">  <span class="keyword">let</span> digitNumberRomanNumeralTransform = <span class="keyword">new</span> <span class="title class_">Map</span>([</span><br><span class="line">    [<span class="number">1</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c],</span><br><span class="line">    [<span class="number">2</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c],</span><br><span class="line">    [<span class="number">3</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> c + c + c],</span><br><span class="line">    [<span class="number">4</span>, <span class="function">(<span class="params">c, p, _</span>) =&gt;</span> c + p],</span><br><span class="line">    [<span class="number">5</span>, <span class="function">(<span class="params">_, p</span>) =&gt;</span> p],</span><br><span class="line">    [<span class="number">6</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c],</span><br><span class="line">    [<span class="number">7</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c],</span><br><span class="line">    [<span class="number">8</span>, <span class="function">(<span class="params">c, p</span>) =&gt;</span> p + c + c + c],</span><br><span class="line">    [<span class="number">9</span>, <span class="function">(<span class="params">c, _, gp</span>) =&gt;</span> c + gp]</span><br><span class="line">  ])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> getTransformFunc = digitNumberRomanNumeralTransform.<span class="title function_">get</span>(digitNumber)</span><br><span class="line">  <span class="keyword">const</span> result = <span class="title function_">getTransformFunc</span>(c, p, gp)</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+
+<p>Every digit in an integer can be represented by 3 roman numerals:</p>
+<ul>
+<li>1s: I, V, X </li>
+<li>10s: X, L, C</li>
+<li>100s: C, D, M</li>
+</ul>
+<p>Sounds like a simple Map.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getDigitRomanNumeralsMap</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">let</span> digitRomanNumeralsMap = <span class="keyword">new</span> <span class="title class_">Map</span>([</span><br><span class="line">  [<span class="number">1</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;I&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;V&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;X&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">10</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;X&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;L&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;C&quot;</span> &#125;],</span><br><span class="line">  [<span class="number">100</span>, &#123; <span class="string">&quot;numeral&quot;</span>: <span class="string">&quot;C&quot;</span>, <span class="string">&quot;parentNumeral&quot;</span>: <span class="string">&quot;D&quot;</span>, <span class="string">&quot;grandParentNumeral&quot;</span>: <span class="string">&quot;M&quot;</span> &#125;],</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> digitRomanNumeralsMap</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now I can:</p>
+<ul>
+<li>Iterate over each digit</li>
+<li>Pick the 3 roman numerals for the digit place</li>
+<li>Convert each digit to roman numeral</li>
+<li>Concatenate roman numerals</li>
+</ul>
+<p>See the code in action <a target="_blank" rel="noopener" href="https://replit.com/@asunar/Roman-Numerals">here</a>.</p>
+<p>Retro time… What have I learned from this experience?</p>
+<ul>
+<li>Read the entire question, ask for clarification and make assumptions explicit </li>
+<li>Read the entire question, ask for clarification and make assumptions explicit (not a typo) </li>
+<li>Do not skip the steps above regardless of how easy the question might seem</li>
+<li>Avoid multitasking, formulate a solution <em>and then</em> write the code</li>
+<li>Draw a table to visualize the available data</li>
+<li>Try to detect a pattern</li>
+<li>Optionally write some pseudocode to mentally test the pattern</li>
+<li>Write code to implement the pattern&#x2F;algorithm</li>
+</ul>
+<p>You’re welcome, future self.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://alper.tech/2021/10/05/Learning-from-failure/" data-id="cm4281xys0000h8trcqsq9b4o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interview/" rel="tag">interview</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/19/waitlist/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Announcing Pantry Hopper [Deprecated]
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/10/Coupling/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Coupling</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pantryhopper/" rel="tag">pantryhopper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/pantryhopper/" style="font-size: 10px;">pantryhopper</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/19/waitlist/">Announcing Pantry Hopper [Deprecated]</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/05/Learning-from-failure/">Learning from failure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/10/Coupling/">Coupling</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Alper Sunar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BL152KSG7H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BL152KSG7H');
+</script>
+
+  <link rel="canonical" href="https://alper.tech/2020/06/26/request-response-reliability/"/>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Request/Response Reliability | Code is Liability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Request&#x2F;Response Reliability">
+<meta property="og:url" content="https://alper.tech/2020/06/26/Request-Response-Reliability/index.html">
+<meta property="og:site_name" content="Code is Liability">
+<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-27T00:40:22.000Z">
+<meta property="article:modified_time" content="2024-11-29T03:59:17.984Z">
+<meta property="article:author" content="Alper Sunar">
+<meta property="article:tag" content="ADSD">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Code is Liability</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://alper.tech"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Request-Response-Reliability" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/26/Request-Response-Reliability/" class="article-date">
+  <time datetime="2020-06-27T00:40:22.000Z" itemprop="datePublished">2020-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Request/Response Reliability
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
+<p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
+<p>Let’s set the stage by stating our end goal.</p>
+<blockquote>
+<p>Design and build performant, maintainable and resilient software systems where adding the 200th feature is as fast and easy as adding the first.</p>
+</blockquote>
+<p>We will start with reliability. Everyone knows that network is not reliable. However, we continue to write code similar to this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
+
+<p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
+<ol>
+<li>Need to send some data to a remote service for a long running workflow.</li>
+<li>Invoke a synchronous call and wait for response.</li>
+<li>Get a timeout exception</li>
+</ol>
+<p> Here are some possible scenarios</p>
+<ul>
+<li>Data did not arrive at the server </li>
+<li>Data arrived, service did not complete processing before timeout.</li>
+</ul>
+<p> At this point client does not know what to do; this is important data that needs to processed. </p>
+<ul>
+<li>Resend and risk duplicate processing? </li>
+<li>Write service code to handle deduplication? What if we don’t own the service?</li>
+<li>What do we tell the user? I know “An unexpected error occurred” :)</li>
+</ul>
+<p> The bottom line is:</p>
+<blockquote>
+<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br> -Udi Dahan</p>
+</blockquote>
+<p>Today I learned: It is very difficult to build reliable systems on top of http with request&#x2F;response (remote procedure calling-RPC, REST, Web Services etc.)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://alper.tech/2020/06/26/Request-Response-Reliability/" data-id="cm4281xyy0003h8tr87lw2s9x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/28/Works-on-my-machine/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Works on my machine
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/15/Remote-Work/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Remote Work Revolution</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pantryhopper/" rel="tag">pantryhopper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/" rel="tag">remote</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ADSD/" style="font-size: 20px;">ADSD</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/pantryhopper/" style="font-size: 10px;">pantryhopper</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/19/waitlist/">Announcing Pantry Hopper [Deprecated]</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/05/Learning-from-failure/">Learning from failure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/10/Coupling/">Coupling</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/09/Request-Response-to-Service-Boundaries/">Request/Response to Service Boundaries</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/02/Request-Response-Performance/">Request/Response Performance</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Alper Sunar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
