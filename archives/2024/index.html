@@ -11,24 +11,19 @@
   gtag('config', 'G-BL152KSG7H');
 </script>
 
-  <link rel="canonical" href="https://alper.tech/2020/06/26/request-response-reliability/"/>
+  <link rel="canonical" href="https://alper.tech/archives/2024/"/>
   <meta charset="utf-8">
   
 
   
-  <title>Request/Response Reliability | Code is Liability</title>
+  <title>Archives: 2024 | Code is Liability</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Request&#x2F;Response Reliability">
-<meta property="og:url" content="https://alper.tech/2020/06/26/Request-Response-Reliability/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Code is Liability">
+<meta property="og:url" content="https://alper.tech/archives/2024/index.html">
 <meta property="og:site_name" content="Code is Liability">
-<meta property="og:description" content="This is a part of a series of posts to document my learnings after watching Udi Dahan’s Advanced Distributed Systems Design course. I reviewed the videos multiple times and took detailed notes to real">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-06-27T00:40:22.000Z">
-<meta property="article:modified_time" content="2024-11-29T03:59:17.984Z">
 <meta property="article:author" content="Alper Sunar">
-<meta property="article:tag" content="ADSD">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Code is Liability" type="application/atom+xml">
@@ -78,93 +73,40 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Request-Response-Reliability" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/26/Request-Response-Reliability/" class="article-date">
-  <time datetime="2020-06-27T00:40:22.000Z" itemprop="datePublished">2020-06-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      Request/Response Reliability
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2024" class="archive-year">2024</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2024/11/29/Applied-Problem-Solving/" class="archive-article-date">
+  <time datetime="2024-11-30T01:02:16.000Z" itemprop="datePublished">Nov 29</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2024/11/29/Applied-Problem-Solving/">Applied Problem Solving</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>This is a part of a series of <a href="../../../../tags/ADSD/">posts</a> to document my learnings after watching Udi Dahan’s <a target="_blank" rel="noopener" href="https://learn.particular.net/courses/adsd-online">Advanced Distributed Systems Design</a> course.</p>
-<p>I reviewed the videos multiple times and took detailed notes to really internalize the principles. These are the kind of technology agnostic principles that have been around for decades and should be relevant for years to come as opposed to the intricacies of the JavaScript framework du jour.</p>
-<p>Let’s set the stage by stating our end goal.</p>
-<blockquote>
-<p>Design and build performant, maintainable and resilient software systems where adding the 200th feature is as fast and easy as adding the first.</p>
-</blockquote>
-<p>We will start with reliability. Everyone knows that network is not reliable. However, we continue to write code similar to this.</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = importantService.Process(data);</span><br></pre></td></tr></table></figure>
-
-<p>Udi Dahan used timeout exception to demonstrate the reliability issues with this code snippet.</p>
-<ol>
-<li>Need to send some data to a remote service for a long running workflow.</li>
-<li>Invoke a synchronous call and wait for response.</li>
-<li>Get a timeout exception</li>
-</ol>
-<p> Here are some possible scenarios</p>
-<ul>
-<li>Data did not arrive at the server </li>
-<li>Data arrived, service did not complete processing before timeout.</li>
-</ul>
-<p> At this point client does not know what to do; this is important data that needs to processed. </p>
-<ul>
-<li>Resend and risk duplicate processing? </li>
-<li>Write service code to handle deduplication? What if we don’t own the service?</li>
-<li>What do we tell the user? I know “An unexpected error occurred” :)</li>
-</ul>
-<p> The bottom line is:</p>
-<blockquote>
-<p>If you’re doing this on top of http, you’re always going to be almost there. There’s always going to be the scenario of this time I’ve done it. This time I finally solved all of the edge cases, and then some period of time later in production, some other thing will blow up and you’ll discover oh except that one.<br> -Udi Dahan</p>
-</blockquote>
-<p>Today I learned: It is very difficult to build reliable systems on top of http with request&#x2F;response (remote procedure calling-RPC, REST, Web Services etc.)</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alper.tech/2020/06/26/Request-Response-Reliability/" data-id="cm45wry5f000e20tr6a5xf1nn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADSD/" rel="tag">ADSD</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2020/06/28/Works-on-my-machine/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Works on my machine
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/01/15/Remote-Work/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Remote Work Revolution</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         
